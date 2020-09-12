@@ -29,7 +29,8 @@ Compilar y ejecutar VB v1.0.0.21 para .NET Framework 4.7.2
 Y en estas otras que actualmente estoy depurando o solo para uso personal:
 Compilar y ejecutar (.NET 5.0) v1.0.0.0 para .NET 5.0 Preview 8 (utiliza gsColorearCore)
 Compilar NETCore WinF v1.0.0.3 para .NET 5.0 Preview 8
- 
+
+
  
 Guillermo
 
