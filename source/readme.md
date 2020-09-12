@@ -4,7 +4,7 @@ Directorio v1.0.0.2<br>
 Es el código de la versión 1.0.0.0 revisión 1.0.0.2 (paquete NuGet 1.0.0.1)<br>
 <br>
 <br>
-NOTA:
+NOTAS:<br>
 La versión de la biblioteca (AssemblyVersion) será la misma hasta que haya cambios importantes en su uso.<br>
 Empiezo con la 1.0.0.0 para la compilación para .NET Standard 2.0<br>
 La versión secundaria (FileVersion) la utilizo para las diferentes modificaciones del código, ya sean nuevas características como cambios por corrección de bugs en el código.<br>
