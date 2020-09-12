@@ -33,4 +33,4 @@ Compilar NETCore WinF v1.0.0.3 para .NET 5.0 Preview 8<br>
  
 Guillermo<br>
 
-Actualizado el 12 de septimbre de 2020 a las 11:29
+Actualizado el 12 de septimbre de 2020 a las 21:34
