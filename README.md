@@ -11,9 +11,10 @@ El lenguaje de código usado es Visual Basic .NET.<br>
 <br>
 Puedes usar este código en tus proyectos sin ninguna restricción, así como la DLL una vez compilada, la cual puedes descargarla o instalarla desde el paquete de NuGet:
 https://www.nuget.org/packages/gsColorearNET/<br>
-  
 <br>
-# Uso de esta DLL y de las versiones anteriores:
+
+Uso de esta DLL y de las versiones anteriores:
+==============================================
 
 <br> 
 Actualmente esta biblioteca (o sus variantes anteriores para .NET Framework y .NET Core 3.1) las utilizo personalmente (algunas están distribuidas en la red) en estas aplicaciones (si no se indica el nombre de la DLL de colorear será gsColorear para .NET Framework)<br>
