@@ -21,7 +21,7 @@ Esa es la que suelo ir cambiando en cada actualización y solo cambiará a otra 
 La versión del paquete NuGet (Version) la iré incrementando en cada nueva publicación de un paquete.<br>
 <br>
 Guillermo<br>
-Actualizado el 12 de septiembre de 2020 a las 21:33
+Actualizado el 13 de septiembre de 2020 a las 16:42
 
 
 
