@@ -6,19 +6,14 @@
 ' Se guardará el nombre, cadena de buscar, reemplazar y nombre de guardar como
 ' Añadido en la revisión 1.0.0.40852
 '
-' ©Guillermo 'guille' Som, 2006
+' ©Guillermo 'guille' Som, 2006m 2020
 '------------------------------------------------------------------------------
+Option Strict On
+Option Infer On
+
 Imports Microsoft.VisualBasic
-Imports vb = Microsoft.VisualBasic
 Imports System
-
-'Imports System.Collections
-'Imports System.Collections.Generic
-'Imports System.Configuration
-'Imports System.Xml
-'Imports System.IO
-
-'Namespace elGuille.Util.Developer
+Imports System.Collections.Generic
 
 ''' <summary>
 ''' Clase para usar con la lista de ficheros recientes.
@@ -42,6 +37,7 @@ Public Class FicheroReciente
     ''' </summary>
     ''' <remarks></remarks>
     Public Reemp_Poner As String
+
     Private m_Guardar_Como As String
     ''' <summary>
     ''' El nombre usado a la hora de guardar como.
@@ -59,14 +55,14 @@ Public Class FicheroReciente
             End If
             Return m_Guardar_Como
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             ' Guardar solo el nombre del fichero
             ' No quitarle el path!!!                                (23/Ago/06)
             m_Guardar_Como = value ' System.IO.Path.GetFileName(value)
         End Set
     End Property
 
-    Private Shared ficheros As New System.Collections.Generic.Dictionary(Of String, FicheroReciente)
+    Private Shared ficheros As New Dictionary(Of String, FicheroReciente)
 
     ''' <summary>
     ''' Método compartido que devuelve un FicheroReciente
@@ -78,7 +74,7 @@ Public Class FicheroReciente
     ''' <returns>
     ''' Una referencia al objeto asociado a ese nombre.
     ''' </returns>
-    Public Shared Function Fichero(ByVal nombre As String) As FicheroReciente
+    Public Shared Function Fichero(nombre As String) As FicheroReciente
         If ficheros.ContainsKey(nombre.ToLower()) = False Then
             ' Añadirlo
             Dim ficRec As New FicheroReciente
@@ -90,5 +86,3 @@ Public Class FicheroReciente
         End If
     End Function
 End Class
-
-'End Namespace

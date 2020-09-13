@@ -6,16 +6,16 @@
 '
 ' Primera versión: 21/Dic/03
 '
-' ©Guillermo 'guille' Som, 2003-2006
+' ©Guillermo 'guille' Som, 2003-2006, 2020
 '------------------------------------------------------------------------------
-Option Explicit On 
+Option Explicit On
 Option Strict On
+Option Infer On
 
 Imports Microsoft.VisualBasic
-'Imports vb = Microsoft.VisualBasic
 Imports System
-
-'Namespace elGuille.Util.Developer
+Imports System.IO
+Imports System.Text
 
 ''' <summary>
 ''' Clase con utilidades relacionadas con los ficheros
@@ -38,43 +38,42 @@ Public NotInheritable Class Ficheros
     ''' correspondiente al formato del fichero o 
     ''' System.Text.Encoding.Default si no se ha podido averiguar el formato
     ''' </returns>
-    Public Shared Function FormatoFichero(ByVal fichero As String) As System.Text.Encoding
+    Public Shared Function FormatoFichero(fichero As String) As Encoding
         ' Por defecto devolver ANSI
         ' Incluso si es una cadena vacía o no existe            (26/Nov/05)
         ' Aunque se debería devolver Nothing, porque lo recomendable es
         ' comprobar que exista antes de llamar a esta función.
         If fichero Is Nothing OrElse fichero.Length = 0 Then
-            Return System.Text.Encoding.Default
+            Return Encoding.Default
         End If
-        If System.IO.File.Exists(fichero) = False Then
-            Return System.Text.Encoding.Default
+        If File.Exists(fichero) = False Then
+            Return Encoding.Default
         End If
         '
         ' Los ficheros Unicode tienen estos dos bytes: FF FE (normal o little-endian) o FE FF (big-endian)
         ' Los ficheros UTF-8 tienen estos tres bytes: EF BB BF
-        Dim f As System.Text.Encoding
         Dim fs As System.IO.FileStream = Nothing
-        f = System.Text.Encoding.Default
+        Dim f = Encoding.Default
         Try
             ' Abrir el fichero y averiguar el formato
             ' Indicar que se abre para leer y se comparte       (13/Jun/06)
             ' para leer y escribir
-            fs = New System.IO.FileStream(fichero, System.IO.FileMode.Open, System.IO.FileAccess.Read, IO.FileShare.ReadWrite)
-            Dim c1 As Integer = fs.ReadByte
-            Dim c2 As Integer = fs.ReadByte
-            Dim c3 As Integer = fs.ReadByte
-            '
+            fs = New FileStream(fichero, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
+            Dim c1 = fs.ReadByte
+            Dim c2 = fs.ReadByte
+            Dim c3 = fs.ReadByte
+
             If (c1 = &HFF AndAlso c2 = &HFE) OrElse (c1 = &HFE AndAlso c2 = &HFF) Then
-                f = System.Text.Encoding.Unicode
+                f = Encoding.Unicode
             ElseIf c1 = &HEF AndAlso c2 = &HBB AndAlso c3 = &HBF Then
-                f = System.Text.Encoding.UTF8
+                f = Encoding.UTF8
             Else
                 ' comprobación del formato UTF-7                    (05/May/04)
                 ' En el formato UTF-7 si tiene caracteres no ASCII contendrá: 2B 41 (+A)
-                '
+
                 ' cerramos el fichero anterior, para poder abrirlo de nuevo
                 fs.Close()
-                Dim sr As New System.IO.StreamReader(fichero) ', System.Text.Encoding.Default)
+                Dim sr As New System.IO.StreamReader(fichero)
                 Dim s As String
                 ' El problema será cuando el fichero sea demasiado grande
                 ' Nos arriesgamos a leer sólo una cantidad de caracteres, por ejemplo 100KB,
@@ -89,25 +88,22 @@ Public NotInheritable Class Ficheros
                 End If
                 If s.IndexOf("+A") > -1 Then
 #Disable Warning MSLIB0001 ' El tipo o el miembro están obsoletos
-                    f = System.Text.Encoding.UTF7
+                    f = Encoding.UTF7
 #Enable Warning MSLIB0001 ' El tipo o el miembro están obsoletos
                 End If
                 sr.Close()
             End If
         Catch 'ex As Exception
             ' si se produce algún error, asumimos que es ANSI
-            f = System.Text.Encoding.Default
+            f = Encoding.Default
         Finally
             ' Por si da error...                                (13/Jun/06)
             If fs IsNot Nothing Then
                 fs.Close()
             End If
-            'fs.Close()
         End Try
-        '
+
         Return f
     End Function
 
 End Class
-
-'End Namespace

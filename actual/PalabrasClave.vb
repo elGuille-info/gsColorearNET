@@ -6,15 +6,15 @@
 '
 ' Añado/quito palabras clave/tipos del fichero de sql (.40855)      (31/Mar/06)
 '
-' ©Guillermo 'guille' Som, 2005-2006
+' ©Guillermo 'guille' Som, 2005-2006, 2020
 '------------------------------------------------------------------------------
 Option Strict On
+Option Infer On
 
 Imports Microsoft.VisualBasic
 Imports System
-Imports System.Collections.Generic
+'Imports System.Collections.Generic
 
-'Namespace elGuille.Util.Developer
 
 ''' <summary>
 ''' Enumeración para los distintos lenguajes
@@ -85,10 +85,12 @@ Public Class Comentarios
     ''' Los caracteres que indican el inicio del comentario múltiple
     ''' </summary>
     Public Inicio As String
+
     ''' <summary>
     ''' Los caracteres que indican el final del comentario múltiple
     ''' </summary>
     Public Final As String
+
     ''' <summary>
     ''' Propiedad predeterminada (indizador) que devuelve
     ''' el comentario de inicio o final dependiendo del valor
@@ -103,7 +105,7 @@ Public Class Comentarios
     ''' <value>El valor a asignar</value>
     ''' <returns>Una cadena con el valor</returns>
     ''' <remarks></remarks>
-    Default Public Property Item(ByVal index As Integer) As String
+    Default Public Property Item(index As Integer) As String
         Get
             If index = 0 Then
                 Return Inicio
@@ -111,7 +113,7 @@ Public Class Comentarios
                 Return Final
             End If
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             If index = 0 Then
                 Inicio = value
             Else
@@ -119,6 +121,7 @@ Public Class Comentarios
             End If
         End Set
     End Property
+
     ''' <summary>
     ''' Constructor en el que indicamos los valores
     ''' a asignar.
@@ -131,7 +134,7 @@ Public Class Comentarios
     ''' El texto de la cadena final del comentario múltiple.
     ''' Ver <seealso cref="Inicio">Final</seealso>
     ''' </param>
-    Sub New(ByVal inicio As String, ByVal final As String)
+    Sub New(inicio As String, final As String)
         Me.Inicio = inicio
         Me.Final = final
     End Sub
@@ -149,16 +152,12 @@ End Class
 ''' Indicando el lenguaje o sin indicarlo.
 ''' </remarks>
 Public Class PalabrasClave
-    Private palabras As New System.Collections.Generic.SortedDictionary(Of Lenguajes, SortedDictionary(Of String, PalabraClave))
-    Private Shared ficheros As New System.Collections.Generic.Dictionary(Of Lenguajes, String)
-    Private Shared extensiones As New System.Collections.Generic.Dictionary(Of Lenguajes, String)
-    Private Shared caseSensibles As New System.Collections.Generic.Dictionary(Of Lenguajes, Boolean)
-    '
-    ' Para los comentarios
-    Private Shared remSimple1 As New System.Collections.Generic.Dictionary(Of Lenguajes, String)
-    'Private Shared remSimple2 As New System.Collections.Generic.Dictionary(Of Lenguajes, String)
-    Private Shared remMultip1 As New System.Collections.Generic.Dictionary(Of Lenguajes, Comentarios)
-    Private Shared remMultip2 As New System.Collections.Generic.Dictionary(Of Lenguajes, Comentarios)
+
+    ''' <summary>
+    ''' Colección de palabras clave <see cref="PalabraClave"/> de cada lenguaje
+    ''' </summary>
+    ''' <returns></returns>
+    Private ReadOnly Property Palabras As New SortedDictionary(Of Lenguajes, SortedDictionary(Of String, PalabraClave))
 
     '----------------------------------------------------------------------
     ' Métodos y propiedades compartidas
@@ -262,11 +261,7 @@ Public Class PalabrasClave
     ''' </returns>
     ''' <remarks>
     ''' </remarks>
-    Public Shared ReadOnly Property CommentsMult1() As Dictionary(Of Lenguajes, Comentarios)
-        Get
-            Return remMultip1
-        End Get
-    End Property
+    Public Shared ReadOnly Property CommentsMult1() As New Dictionary(Of Lenguajes, Comentarios)
 
     ''' <summary>
     ''' Devuelve o asigna los caracteres usados para el comentario simple.
@@ -277,26 +272,27 @@ Public Class PalabrasClave
     ''' <returns></returns>
     ''' <remarks>
     ''' </remarks>
-    Public Shared Property CommentMult1(ByVal lenguaje As Lenguajes, ByVal index As Integer) As String
+    Public Shared Property CommentMult1(lenguaje As Lenguajes, index As Integer) As String
         Get
-            If remMultip1.ContainsKey(lenguaje) Then
-                Return remMultip1(lenguaje)(index)
+            If CommentsMult1.ContainsKey(lenguaje) Then
+                Return CommentsMult1(lenguaje)(index)
             Else
                 Return ""
             End If
         End Get
-        Set(ByVal value As String)
-            If remMultip1.ContainsKey(lenguaje) Then
-                remMultip1(lenguaje)(index) = value
+        Set(value As String)
+            If CommentsMult1.ContainsKey(lenguaje) Then
+                CommentsMult1(lenguaje)(index) = value
             Else
                 If index = RemMIni Then
-                    remMultip1.Add(lenguaje, New Comentarios(value, ""))
+                    CommentsMult1.Add(lenguaje, New Comentarios(value, ""))
                 Else
-                    remMultip1.Add(lenguaje, New Comentarios("", value))
+                    CommentsMult1.Add(lenguaje, New Comentarios("", value))
                 End If
             End If
         End Set
     End Property
+
     ''' <summary>
     ''' Devuelve o asigna los caracteres usados para el comentario simple.
     ''' </summary>
@@ -308,12 +304,12 @@ Public Class PalabrasClave
     ''' <returns>Las extensiones de ficheros o una cadena vacía.</returns>
     ''' <remarks>
     ''' </remarks>
-    Public Shared Property CommentMult1(ByVal lenguaje As String, ByVal index As Integer) As String
+    Public Shared Property CommentMult1(lenguaje As String, index As Integer) As String
         Get
             Dim le As Lenguajes = CType(System.Enum.Parse(GetType(Lenguajes), lenguaje), Lenguajes)
             Return CommentMult1(le, index)
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Dim le As Lenguajes = CType(System.Enum.Parse(GetType(Lenguajes), lenguaje), Lenguajes)
             CommentMult1(le, index) = value
         End Set
@@ -329,11 +325,7 @@ Public Class PalabrasClave
     ''' </returns>
     ''' <remarks>
     ''' </remarks>
-    Public Shared ReadOnly Property CommentsMult2() As Dictionary(Of Lenguajes, Comentarios)
-        Get
-            Return remMultip2
-        End Get
-    End Property
+    Public Shared ReadOnly Property CommentsMult2() As New Dictionary(Of Lenguajes, Comentarios)
 
     ''' <summary>
     ''' Devuelve o asigna los caracteres usados para el comentario simple.
@@ -344,26 +336,27 @@ Public Class PalabrasClave
     ''' <returns></returns>
     ''' <remarks>
     ''' </remarks>
-    Public Shared Property CommentMult2(ByVal lenguaje As Lenguajes, ByVal index As Integer) As String
+    Public Shared Property CommentMult2(lenguaje As Lenguajes, index As Integer) As String
         Get
-            If remMultip2.ContainsKey(lenguaje) Then
-                Return remMultip2(lenguaje)(index)
+            If CommentsMult2.ContainsKey(lenguaje) Then
+                Return CommentsMult2(lenguaje)(index)
             Else
                 Return ""
             End If
         End Get
-        Set(ByVal value As String)
-            If remMultip2.ContainsKey(lenguaje) Then
-                remMultip2(lenguaje)(index) = value
+        Set(value As String)
+            If CommentsMult2.ContainsKey(lenguaje) Then
+                CommentsMult2(lenguaje)(index) = value
             Else
                 If index = RemMIni Then
-                    remMultip2.Add(lenguaje, New Comentarios(value, ""))
+                    CommentsMult2.Add(lenguaje, New Comentarios(value, ""))
                 Else
-                    remMultip2.Add(lenguaje, New Comentarios("", value))
+                    CommentsMult2.Add(lenguaje, New Comentarios("", value))
                 End If
             End If
         End Set
     End Property
+
     ''' <summary>
     ''' Devuelve o asigna los caracteres usados para el comentario simple.
     ''' </summary>
@@ -375,17 +368,16 @@ Public Class PalabrasClave
     ''' <returns>Las extensiones de ficheros o una cadena vacía.</returns>
     ''' <remarks>
     ''' </remarks>
-    Public Shared Property CommentMult2(ByVal lenguaje As String, ByVal index As Integer) As String
+    Public Shared Property CommentMult2(lenguaje As String, index As Integer) As String
         Get
             Dim le As Lenguajes = CType(System.Enum.Parse(GetType(Lenguajes), lenguaje), Lenguajes)
             Return CommentMult2(le, index)
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Dim le As Lenguajes = CType(System.Enum.Parse(GetType(Lenguajes), lenguaje), Lenguajes)
             CommentMult2(le, index) = value
         End Set
     End Property
-
 
     ''' <summary>
     ''' Devuelve una colección con los lenguajes y los comentarios simples.
@@ -397,11 +389,7 @@ Public Class PalabrasClave
     ''' </returns>
     ''' <remarks>
     ''' </remarks>
-    Public Shared ReadOnly Property ComentariosSimples() As Dictionary(Of Lenguajes, String)
-        Get
-            Return remSimple1
-        End Get
-    End Property
+    Public Shared ReadOnly Property ComentariosSimples() As New Dictionary(Of Lenguajes, String)
 
     ''' <summary>
     ''' Devuelve o asigna los caracteres usados para el comentario simple.
@@ -412,22 +400,23 @@ Public Class PalabrasClave
     ''' <returns></returns>
     ''' <remarks>
     ''' </remarks>
-    Public Shared Property ComentarioSimple1(ByVal lenguaje As Lenguajes) As String
+    Public Shared Property ComentarioSimple1(lenguaje As Lenguajes) As String
         Get
-            If remSimple1.ContainsKey(lenguaje) Then
-                Return remSimple1(lenguaje)
+            If ComentariosSimples.ContainsKey(lenguaje) Then
+                Return ComentariosSimples(lenguaje)
             Else
                 Return ""
             End If
         End Get
-        Set(ByVal value As String)
-            If remSimple1.ContainsKey(lenguaje) Then
-                remSimple1(lenguaje) = value
+        Set(value As String)
+            If ComentariosSimples.ContainsKey(lenguaje) Then
+                ComentariosSimples(lenguaje) = value
             Else
-                remSimple1.Add(lenguaje, value)
+                ComentariosSimples.Add(lenguaje, value)
             End If
         End Set
     End Property
+
     ''' <summary>
     ''' Devuelve o asigna los caracteres usados para el comentario simple.
     ''' </summary>
@@ -439,12 +428,12 @@ Public Class PalabrasClave
     ''' <returns>Las extensiones de ficheros o una cadena vacía.</returns>
     ''' <remarks>
     ''' </remarks>
-    Public Shared Property ComentariosSimple(ByVal lenguaje As String) As String
+    Public Shared Property ComentariosSimple(lenguaje As String) As String
         Get
             Dim le As Lenguajes = CType(System.Enum.Parse(GetType(Lenguajes), lenguaje), Lenguajes)
             Return ComentarioSimple1(le)
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Dim le As Lenguajes = CType(System.Enum.Parse(GetType(Lenguajes), lenguaje), Lenguajes)
             ComentarioSimple1(le) = value
         End Set
@@ -453,6 +442,7 @@ Public Class PalabrasClave
     '----------------------------------------------------------------------
     ' Para indicar si el lenguaje es sensible a mayúsculas y minúsculas
     '----------------------------------------------------------------------
+
     ''' <summary>
     ''' Devuelve una colección con los lenguajes y si son case sensitive.
     ''' </summary>
@@ -464,11 +454,7 @@ Public Class PalabrasClave
     ''' <remarks>
     ''' Esta colección se usa para saber si los lenguajes son case sensitive (sensibles a mayúsculas / minúsculas).
     ''' </remarks>
-    Public Shared ReadOnly Property CaseSensitives() As Dictionary(Of Lenguajes, Boolean)
-        Get
-            Return caseSensibles
-        End Get
-    End Property
+    Public Shared ReadOnly Property CaseSensitives() As New Dictionary(Of Lenguajes, Boolean)
 
     ''' <summary>
     ''' Devuelve o asigna si el lenguajes es case sensitive.
@@ -481,22 +467,23 @@ Public Class PalabrasClave
     ''' <remarks>
     ''' Esta propiedad solo se usará como repositorio para almacenar si el lenguaje es case sensitive.
     ''' </remarks>
-    Public Shared Property CaseSensitive(ByVal lenguaje As Lenguajes) As Boolean
+    Public Shared Property CaseSensitive(lenguaje As Lenguajes) As Boolean
         Get
-            If caseSensibles.ContainsKey(lenguaje) Then
-                Return caseSensibles(lenguaje)
+            If CaseSensitives.ContainsKey(lenguaje) Then
+                Return CaseSensitives(lenguaje)
             Else
                 Return False
             End If
         End Get
-        Set(ByVal value As Boolean)
-            If caseSensibles.ContainsKey(lenguaje) Then
-                caseSensibles(lenguaje) = value
+        Set(value As Boolean)
+            If CaseSensitives.ContainsKey(lenguaje) Then
+                CaseSensitives(lenguaje) = value
             Else
-                caseSensibles.Add(lenguaje, value)
+                CaseSensitives.Add(lenguaje, value)
             End If
         End Set
     End Property
+
     ''' <summary>
     ''' Devuelve o asigna si el lenguajes es case sensitive.
     ''' </summary>
@@ -511,21 +498,21 @@ Public Class PalabrasClave
     ''' <remarks>
     ''' Esta propiedad solo se usará como repositorio para almacenar si el lenguaje es case sensitive.
     ''' </remarks>
-    Public Shared Property CaseSensitive(ByVal lenguaje As String) As Boolean
+    Public Shared Property CaseSensitive(lenguaje As String) As Boolean
         Get
             Dim le As Lenguajes = CType(System.Enum.Parse(GetType(Lenguajes), lenguaje), Lenguajes)
             Return CaseSensitive(le)
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Dim le As Lenguajes = CType(System.Enum.Parse(GetType(Lenguajes), lenguaje), Lenguajes)
             CaseSensitive(le) = value
         End Set
     End Property
 
-
     '----------------------------------------------------------------------
     ' Para las extensiones asociadas con cada lenguaje
     '----------------------------------------------------------------------
+
     ''' <summary>
     ''' Devuelve una colección con los lenguajes y extensiones asociadas.
     ''' </summary>
@@ -539,11 +526,7 @@ Public Class PalabrasClave
     ''' con lenguajes, pero no tiene ninguna relación con las colecciones de instrucciones
     ''' que esta clase pueda contener.
     ''' </remarks>
-    Public Shared ReadOnly Property Extensions() As Dictionary(Of Lenguajes, String)
-        Get
-            Return extensiones
-        End Get
-    End Property
+    Public Shared ReadOnly Property Extensions() As New Dictionary(Of Lenguajes, String)
 
     ''' <summary>
     ''' Devuelve o asigna las extensiones a un lenguaje.
@@ -559,22 +542,23 @@ Public Class PalabrasClave
     ''' de los ficheros asociados con un lenguaje, pero no tiene ninguna
     ''' relación con los idiomas utilizados para almacenar las instrucciones.
     ''' </remarks>
-    Public Shared Property Extension(ByVal lenguaje As Lenguajes) As String
+    Public Shared Property Extension(lenguaje As Lenguajes) As String
         Get
-            If extensiones.ContainsKey(lenguaje) Then
-                Return extensiones(lenguaje)
+            If Extensions.ContainsKey(lenguaje) Then
+                Return Extensions(lenguaje)
             Else
                 Return ""
             End If
         End Get
-        Set(ByVal value As String)
-            If extensiones.ContainsKey(lenguaje) Then
-                extensiones(lenguaje) = value
+        Set(value As String)
+            If Extensions.ContainsKey(lenguaje) Then
+                Extensions(lenguaje) = value
             Else
-                extensiones.Add(lenguaje, value)
+                Extensions.Add(lenguaje, value)
             End If
         End Set
     End Property
+
     ''' <summary>
     ''' Devuelve o asigna las extensiones a un lenguaje.
     ''' </summary>
@@ -592,12 +576,12 @@ Public Class PalabrasClave
     ''' de los ficheros asociados con un lenguaje, pero no tiene ninguna
     ''' relación con los idiomas utilizados para almacenar las instrucciones.
     ''' </remarks>
-    Public Shared Property Extension(ByVal lenguaje As String) As String
+    Public Shared Property Extension(lenguaje As String) As String
         Get
             Dim le As Lenguajes = CType(System.Enum.Parse(GetType(Lenguajes), lenguaje), Lenguajes)
             Return Extension(le)
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Dim le As Lenguajes = CType(System.Enum.Parse(GetType(Lenguajes), lenguaje), Lenguajes)
             Extension(le) = value
         End Set
@@ -621,11 +605,7 @@ Public Class PalabrasClave
     ''' con lenguajes, pero no tiene ninguna relación con las colecciones de instrucciones
     ''' que esta clase pueda contener.
     ''' </remarks>
-    Public Shared ReadOnly Property Filenames() As Dictionary(Of Lenguajes, String)
-        Get
-            Return ficheros
-        End Get
-    End Property
+    Public Shared ReadOnly Property Filenames() As New Dictionary(Of Lenguajes, String)
 
     ''' <summary>
     ''' Devuelve o asigna un fichero a un lenguaje.
@@ -644,22 +624,23 @@ Public Class PalabrasClave
     ''' existen dos métodos para asignar y recuperar los ficheros:
     ''' SetFilename y GetFilename.
     ''' </remarks>
-    Public Shared Property Filename(ByVal lenguaje As Lenguajes) As String
+    Public Shared Property Filename(lenguaje As Lenguajes) As String
         Get
-            If ficheros.ContainsKey(lenguaje) Then
-                Return ficheros(lenguaje)
+            If Filenames.ContainsKey(lenguaje) Then
+                Return Filenames(lenguaje)
             Else
                 Return ""
             End If
         End Get
-        Set(ByVal value As String)
-            If ficheros.ContainsKey(lenguaje) Then
-                ficheros(lenguaje) = value
+        Set(value As String)
+            If Filenames.ContainsKey(lenguaje) Then
+                Filenames(lenguaje) = value
             Else
-                ficheros.Add(lenguaje, value)
+                Filenames.Add(lenguaje, value)
             End If
         End Set
     End Property
+
     ''' <summary>
     ''' Devuelve o asigna un fichero a un lenguaje.
     ''' </summary>
@@ -680,12 +661,12 @@ Public Class PalabrasClave
     ''' existen dos métodos para asignar y recuperar los ficheros:
     ''' SetFilename y GetFilename.
     ''' </remarks>
-    Public Shared Property Filename(ByVal lenguaje As String) As String
+    Public Shared Property Filename(lenguaje As String) As String
         Get
             Dim le As Lenguajes = CType(System.Enum.Parse(GetType(Lenguajes), lenguaje), Lenguajes)
             Return Filename(le)
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Dim le As Lenguajes = CType(System.Enum.Parse(GetType(Lenguajes), lenguaje), Lenguajes)
             Filename(le) = value
         End Set
@@ -700,11 +681,11 @@ Public Class PalabrasClave
     ''' Este método compartido es una alternativa a la propiedad Filenames, ya que C# no soporta
     ''' propiedades con parámetros, y así se podrá usar este método tanto en VB como en C#.
     ''' </remarks>
-    Public Shared Sub SetFilename(ByVal lenguaje As Lenguajes, ByVal filename As String)
-        If ficheros.ContainsKey(lenguaje) Then
-            ficheros(lenguaje) = filename
+    Public Shared Sub SetFilename(lenguaje As Lenguajes, filename As String)
+        If Filenames.ContainsKey(lenguaje) Then
+            Filenames(lenguaje) = filename
         Else
-            ficheros.Add(lenguaje, filename)
+            Filenames.Add(lenguaje, filename)
         End If
     End Sub
 
@@ -720,7 +701,7 @@ Public Class PalabrasClave
     ''' Este método compartido es una alternativa a la propiedad Filenames, ya que C# no soporta
     ''' propiedades con parámetros, y así se podrá usar este método tanto en VB como en C#.
     ''' </remarks>
-    Public Shared Function GetFilename(ByVal lenguaje As Lenguajes) As String
+    Public Shared Function GetFilename(lenguaje As Lenguajes) As String
         Return Filename(lenguaje)
     End Function
 
@@ -728,41 +709,6 @@ Public Class PalabrasClave
     ' Métodos y propiedades de instancia
     '----------------------------------------------------------------------
 
-    '''' <summary>
-    '''' Método para añadir nuevas instrucciones a la colección
-    '''' de palabras clave a la colección general.
-    '''' </summary>
-    '''' <param name="instruccion">
-    '''' Instrucción escrita en el mismo estado de mayúsculas/minúsculas del lenguaje.
-    '''' </param>
-    '''' <remarks>
-    '''' Las instrucciones se guardarán como clave en minúsculas,
-    '''' de forma que se puedan buscar sin importar cómo se indiquen.
-    '''' </remarks>
-    'Public Sub Add(ByVal instruccion As String)
-    '    Dim palabra As New PalabraClave
-    '    palabra.Instruccion = instruccion
-    '    Me.Add(palabra)
-    'End Sub
-    '''' <summary>
-    '''' Método para añadir nuevas instrucciones a la colección
-    '''' de palabras clave a la colección general.
-    '''' </summary>
-    '''' <param name="palabra">
-    '''' Objeto con la instrucción a añadir a la colección.
-    '''' </param>
-    '''' <remarks>
-    '''' Las instrucciones se guardarán como clave en minúsculas,
-    '''' de forma que se puedan buscar sin importar cómo se indiquen.
-    '''' </remarks>
-    'Public Sub Add(ByVal palabra As PalabraClave)
-    '    If todas.ContainsKey(palabra.Instruccion) = False Then
-    '        todas.Add(palabra.Instruccion, palabra)
-    '    End If
-    '    If todasLower.ContainsKey(palabra.InstruccionToLower) = False Then
-    '        todasLower.Add(palabra.InstruccionToLower, palabra)
-    '    End If
-    'End Sub
     ''' <summary>
     ''' Método para añadir nuevas instrucciones a la colección
     ''' de palabras clave a la colección general y a la del lenguaje
@@ -780,16 +726,12 @@ Public Class PalabrasClave
     ''' Las instrucciones se guardarán como clave en minúsculas,
     ''' de forma que se puedan buscar sin importar cómo se indiquen.
     ''' </remarks>
-    Public Sub Add(ByVal lenguaje As Lenguajes, ByVal instruccion As String)
+    Public Sub Add(lenguaje As Lenguajes, instruccion As String)
         Dim palabra As New PalabraClave
         palabra.Instruccion = instruccion
-        'If lenguaje = Lenguajes.Ninguno Then
-        '    Me.Add(palabra)
-        'Else
-        '    Me.Add(lenguaje, palabra)
-        'End If
         Me.Add(lenguaje, palabra)
     End Sub
+
     ''' <summary>
     ''' Método para añadir nuevas instrucciones a la colección
     ''' de palabras clave a la colección general y a la del lenguaje
@@ -803,82 +745,35 @@ Public Class PalabrasClave
     ''' Las instrucciones se guardarán como clave en minúsculas,
     ''' de forma que se puedan buscar sin importar cómo se indiquen.
     ''' </remarks>
-    Public Sub Add(ByVal lenguaje As Lenguajes, ByVal palabra As PalabraClave)
+    Public Sub Add(lenguaje As Lenguajes, palabra As PalabraClave)
         ' La colección base tendrá todas las palabras
         ' y distingue entre mayúsculas y minúsculas
-        'If lenguaje = Lenguajes.Ninguno Then
-        '    Me.Add(palabra)
-        '    Return
-        'End If
-        'If todas.ContainsKey(palabra.Instruccion) = False Then
-        '    todas.Add(palabra.Instruccion, palabra)
-        'End If
-        'If todasLower.ContainsKey(palabra.InstruccionToLower) = False Then
-        '    todasLower.Add(palabra.InstruccionToLower, palabra)
-        'End If
 
         ' Existirá una colección para cada lenguaje
-        If palabras.ContainsKey(lenguaje) = False Then
+        If Palabras.ContainsKey(lenguaje) = False Then
             Dim col As New SortedDictionary(Of String, PalabraClave)
-            palabras.Add(lenguaje, col)
+            Palabras.Add(lenguaje, col)
         End If
         ' En la colección de cada lenguaje, la clave se guarda en minúscula
-        If palabras(lenguaje).ContainsKey(palabra.InstruccionToLower) = False Then
-            palabras(lenguaje).Add(palabra.InstruccionToLower, palabra)
+        If Palabras(lenguaje).ContainsKey(palabra.InstruccionToLower) = False Then
+            Palabras(lenguaje).Add(palabra.InstruccionToLower, palabra)
         End If
     End Sub
 
-    '''' <summary>
-    '''' Elimina la instrucción de la colección general.
-    '''' </summary>
-    '''' <param name="instruccion">Instrucción a eliminar.</param>
-    '''' <remarks></remarks>
-    'Public Sub Remove(ByVal instruccion As String)
-    '    If todas.ContainsKey(instruccion) Then
-    '        todas.Remove(instruccion)
-    '    End If
-    'End Sub
     ''' <summary>
     ''' Elimina la instrucción de la colección general y del lenguaje indicado.
     ''' </summary>
     ''' <param name="lenguaje">Lenguaje del que se eliminará la instrucción.</param>
     ''' <param name="instruccion">Instrucción a eliminar.</param>
     ''' <remarks></remarks>
-    Public Sub Remove(ByVal lenguaje As Lenguajes, ByVal instruccion As String)
-        'If lenguaje = Lenguajes.Ninguno Then
-        '    Remove(instruccion)
-        '    Return
-        'End If
-        'If todas.ContainsKey(instruccion) Then
-        '    todas.Remove(instruccion)
-        'End If
-        If palabras.ContainsKey(lenguaje) Then
-            If palabras(lenguaje).ContainsKey(instruccion) Then
-                palabras(lenguaje).Remove(instruccion)
+    Public Sub Remove(lenguaje As Lenguajes, instruccion As String)
+        If Palabras.ContainsKey(lenguaje) Then
+            If Palabras(lenguaje).ContainsKey(instruccion) Then
+                Palabras(lenguaje).Remove(instruccion)
             End If
         End If
     End Sub
 
-    '''' <summary>
-    '''' Comprueba si la instrucción está en la colección general.
-    '''' No se hace distinción de mayúsculas y minúsculas.
-    '''' </summary>
-    '''' <param name="instruccion">Instrucción a comprobar.</param>
-    '''' <returns>True si está en la colección.</returns>
-    '''' <remarks></remarks>
-    'Public Function ContainsLower(ByVal instruccion As String) As Boolean
-    '    Return todasLower.ContainsKey(instruccion)
-    'End Function
-    '''' <summary>
-    '''' Comprueba si la instrucción está en la colección general.
-    '''' Se hace distinción entre mayúsculas y minúsculas.
-    '''' </summary>
-    '''' <param name="instruccion">Instrucción a comprobar.</param>
-    '''' <returns>True si está en la colección.</returns>
-    '''' <remarks></remarks>
-    'Public Function Contains(ByVal instruccion As String) As Boolean
-    '    Return todas.ContainsKey(instruccion)
-    'End Function
     ''' <summary>
     ''' Comprueba si la instrucción está en la colección del idioma indicado.
     ''' </summary>
@@ -886,47 +781,19 @@ Public Class PalabrasClave
     ''' <param name="instruccion">Instrucción a comprobar.</param>
     ''' <returns>True si está en la colección.</returns>
     ''' <remarks>Si el lenguaje no está creado, devolverá False.</remarks>
-    Public Function Contains(ByVal lenguaje As Lenguajes, ByVal instruccion As String) As Boolean
-        'If lenguaje = Lenguajes.Ninguno Then
-        '    Return Contains(instruccion)
-        'End If
-        If palabras.ContainsKey(lenguaje) Then
-            Return palabras(lenguaje).ContainsKey(instruccion)
+    Public Function Contains(lenguaje As Lenguajes, instruccion As String) As Boolean
+        If Palabras.ContainsKey(lenguaje) Then
+            Return Palabras(lenguaje).ContainsKey(instruccion)
         End If
         Return False
     End Function
-
-    '''' <summary>
-    '''' Elimina las instrucciones de la colección general.
-    '''' </summary>
-    '''' <remarks></remarks>
-    'Public Sub Clear()
-    '    todas.Clear()
-    '    todasLower.Clear()
-    'End Sub
-    '''' <summary>
-    '''' Elimina las instrucciones de la colección general y
-    '''' opcionalmente de todas las de los lenguajes.
-    '''' </summary>
-    '''' <param name="todos">True para eliminar todas las instrucciones de todos los lenguajes.</param>
-    '''' <remarks></remarks>
-    'Public Sub Clear(ByVal todos As Boolean)
-    '    Me.Clear()
-    '    If todos Then
-    '        For Each le As Lenguajes In palabras.Keys
-    '            If palabras.ContainsKey(le) Then
-    '                palabras(le).Clear()
-    '            End If
-    '        Next
-    '    End If
-    'End Sub
 
     ''' <summary>
     ''' Elimina todas las instrucciones.
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub Clear()
-        palabras.Clear()
+        Palabras.Clear()
     End Sub
 
     ''' <summary>
@@ -939,26 +806,14 @@ Public Class PalabrasClave
     ''' pero si de la colección general, por tanto es preferible eliminar todos los lenguajes,
     ''' salvo que siempre usemos el lenguaje al añadir, buscar, etc.
     ''' </remarks>
-    Public Sub Clear(ByVal lenguaje As Lenguajes)
-        'Me.Clear()
+    Public Sub Clear(lenguaje As Lenguajes)
         If lenguaje <> Lenguajes.Ninguno Then
-            If palabras.ContainsKey(lenguaje) Then
-                palabras(lenguaje).Clear()
+            If Palabras.ContainsKey(lenguaje) Then
+                Palabras(lenguaje).Clear()
             End If
         End If
     End Sub
 
-    '''' <summary>
-    '''' El número de instrucciones de la colección general.
-    '''' </summary>
-    '''' <value>Un valor entero con el número de instrucciones de la colección general.</value>
-    '''' <returns>Devuelve el número de instrucciones de la colección general.</returns>
-    '''' <remarks></remarks>
-    'Public ReadOnly Property Count() As Integer
-    '    Get
-    '        Return todas.Count
-    '    End Get
-    'End Property
     ''' <summary>
     ''' El número de instrucciones del lenguaje indicado.
     ''' </summary>
@@ -966,13 +821,10 @@ Public Class PalabrasClave
     ''' <value>Un valor entero con el número de instrucciones de la colección general.</value>
     ''' <returns>Devuelve el número de instrucciones de la colección del lenguaje indicado.</returns>
     ''' <remarks></remarks>
-    Public ReadOnly Property Count(ByVal lenguaje As Lenguajes) As Integer
+    Public ReadOnly Property Count(lenguaje As Lenguajes) As Integer
         Get
-            'If lenguaje = Lenguajes.Ninguno Then
-            '    Return todas.Count
-            'End If
-            If palabras.ContainsKey(lenguaje) Then
-                Return palabras(lenguaje).Count
+            If Palabras.ContainsKey(lenguaje) Then
+                Return Palabras(lenguaje).Count
             End If
             Return 0
         End Get
@@ -990,90 +842,36 @@ Public Class PalabrasClave
     ''' </remarks>
     Public Function CountAll() As Integer
         Dim i As Integer = 0
-        For Each le As Lenguajes In palabras.Keys
-            i += palabras(le).Count
+        For Each le As Lenguajes In Palabras.Keys
+            i += Palabras(le).Count
         Next
         Return i
     End Function
 
-    'Default Public ReadOnly Property Item(ByVal instruccion As String) As String
-    '    Get
-    '        If todas.ContainsKey(instruccion) Then
-    '            Return todas(instruccion).Instruccion
-    '        End If
-    '        Return ""
-    '    End Get
-    'End Property
-    Default Public ReadOnly Property Item(ByVal lenguaje As Lenguajes, ByVal instruccion As String) As String
+    Default Public ReadOnly Property Item(lenguaje As Lenguajes, instruccion As String) As String
         Get
-            'If lenguaje = Lenguajes.Ninguno Then
-            '    Return Me.Item(instruccion)
-            'End If
-            If palabras.ContainsKey(lenguaje) Then
-                If palabras(lenguaje).ContainsKey(instruccion) Then
-                    Return palabras(lenguaje)(instruccion).Instruccion
+            If Palabras.ContainsKey(lenguaje) Then
+                If Palabras(lenguaje).ContainsKey(instruccion) Then
+                    Return Palabras(lenguaje)(instruccion).Instruccion
                 End If
             End If
             Return ""
         End Get
     End Property
 
-    'Public Function PalabraClaveLower(ByVal instruccion As String) As PalabraClave
-    '    Dim p As PalabraClave = Nothing
-    '    todasLower.TryGetValue(instruccion, p)
-    '    Return p
-
-    '    'If todas.ContainsKey(instruccion) Then
-    '    '    Return todas(instruccion)
-    '    'End If
-    '    'Return Nothing
-    'End Function
-    'Public Function PalabraClave(ByVal instruccion As String) As PalabraClave
-    '    Dim p As PalabraClave = Nothing
-    '    todas.TryGetValue(instruccion, p)
-    '    Return p
-
-    '    'If todas.ContainsKey(instruccion) Then
-    '    '    Return todas(instruccion)
-    '    'End If
-    '    'Return Nothing
-    'End Function
-
-    Public Function PalabraClave(ByVal lenguaje As Lenguajes, ByVal instruccion As String) As PalabraClave
-        'If lenguaje = Lenguajes.Ninguno Then
-        '    Return PalabraClave(instruccion)
-        'End If
+    Public Function PalabraClave(lenguaje As Lenguajes, instruccion As String) As PalabraClave
         Dim p As PalabraClave = Nothing
-        If palabras.ContainsKey(lenguaje) Then
-            palabras(lenguaje).TryGetValue(instruccion, p)
+        If Palabras.ContainsKey(lenguaje) Then
+            Palabras(lenguaje).TryGetValue(instruccion, p)
         End If
         Return p
-
-        'If palabras.ContainsKey(lenguaje) Then
-        '    If palabras(lenguaje).ContainsKey(instruccion) Then
-        '        Return palabras(lenguaje)(instruccion)
-        '    End If
-        'End If
-        'Return Nothing
     End Function
 
-    'Public Function ToArray() As String()
-    '    Dim ar(0 To todas.Count - 1) As String
-    '    Dim i As Integer = 0
-    '    For Each p As PalabraClave In todas.Values
-    '        ar(i) = p.Instruccion
-    '        i += 1
-    '    Next
-    '    Return ar
-    'End Function
-    Public Function ToArray(ByVal lenguaje As Lenguajes) As String()
-        'If lenguaje = Lenguajes.Ninguno Then
-        '    Return Me.ToArray()
-        'End If
-        If palabras.ContainsKey(lenguaje) Then
-            Dim ar(0 To palabras(lenguaje).Count - 1) As String
+    Public Function ToArray(lenguaje As Lenguajes) As String()
+        If Palabras.ContainsKey(lenguaje) Then
+            Dim ar(0 To Palabras(lenguaje).Count - 1) As String
             Dim i As Integer = 0
-            For Each p As PalabraClave In palabras(lenguaje).Values
+            For Each p As PalabraClave In Palabras(lenguaje).Values
                 ar(i) = p.Instruccion
                 i += 1
             Next
@@ -1082,52 +880,14 @@ Public Class PalabrasClave
         Return Nothing
     End Function
 
-    'Public Sub CargarPalabras(ByVal palabras() As String)
-    '    ' Cargar las palabras del fichero indicado
-    '    todas.Clear()
-    '    For Each s As String In palabras
-    '        Me.Add(s)
-    '    Next
-    'End Sub
-    Public Sub CargarPalabras(ByVal lenguaje As Lenguajes, ByVal palabras() As String)
-        'If lenguaje = Lenguajes.Ninguno Then
-        '    CargarPalabras(palabras)
-        '    Return
-        'End If
-
+    Public Sub CargarPalabras(lenguaje As Lenguajes, palabras() As String)
         Me.Clear(lenguaje)
         For Each s As String In palabras
             Me.Add(lenguaje, s)
         Next
     End Sub
-    'Public Sub CargarPalabras(ByVal filename As String)
-    '    ' Cargar las palabras del fichero indicado
-    '    todas.Clear()
 
-    '    Dim sr As System.IO.StreamReader = Nothing
-    '    Try
-    '        sr = New System.IO.StreamReader(filename, System.Text.Encoding.Default, True)
-    '        Dim s As String
-    '        While sr.Peek <> -1
-    '            s = sr.ReadLine
-    '            Me.Add(s)
-    '        End While
-    '        'sr.Close()
-    '    Catch ex As Exception
-    '        Throw ex
-    '    Finally
-    '        If sr IsNot Nothing Then
-    '            sr.Close()
-    '        End If
-    '    End Try
-    'End Sub
-    Public Sub CargarPalabras(ByVal lenguaje As Lenguajes, ByVal filename As String)
-        '' Si el lenguaje indicado es Ninguno, asignar solo la colección normal
-        'If lenguaje = Lenguajes.Ninguno Then
-        '    CargarPalabras(filename)
-        '    Return
-        'End If
-
+    Public Sub CargarPalabras(lenguaje As Lenguajes, filename As String)
         Me.Clear(lenguaje)
 
         ' Cargar las palabras del fichero indicado
@@ -1162,6 +922,7 @@ Public Class PalabraClave
 
     ' La palabra clave en el estado a mostrar
     Private _Instruccion As String
+
     ''' <summary>
     ''' La instrucción de esta palabra clave
     ''' </summary>
@@ -1171,7 +932,7 @@ Public Class PalabraClave
         Get
             Return _Instruccion
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             _Instruccion = value
         End Set
     End Property
@@ -1191,7 +952,7 @@ Public Class PalabraClave
     ''' <param name="obj"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function CompareTo(ByVal obj As Object) As Integer Implements System.IComparable.CompareTo
+    Public Function CompareTo(obj As Object) As Integer Implements System.IComparable.CompareTo
         Return String.Compare(Me.InstruccionToLower, obj.ToString, True)
     End Function
 
@@ -1204,5 +965,3 @@ Public Class PalabraClave
         Return InstruccionToLower
     End Function
 End Class
-
-'End Namespace

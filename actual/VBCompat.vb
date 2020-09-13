@@ -16,7 +16,6 @@ Option Infer On
 Imports Microsoft.VisualBasic
 Imports System
 Imports System.Collections.Generic
-'Imports System.Data
 
 Public Class VBCompat
 

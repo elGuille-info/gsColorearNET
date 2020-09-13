@@ -4,16 +4,15 @@
 '
 ' Métodos de ayuda para las clases                                  (28/Ago/06)
 '
-' ©Guillermo 'guille' Som, 2006
+' ©Guillermo 'guille' Som, 2006, 2020
 '------------------------------------------------------------------------------
 Option Strict On
+Option Infer On
 
 Imports Microsoft.VisualBasic
-Imports vb = Microsoft.VisualBasic
+'Imports vb = Microsoft.VisualBasic
 Imports System
-Imports System.Collections.Generic
-
-'Namespace elGuille.Util.Developer
+'Imports System.Collections.Generic
 
 ''' <summary>
 ''' Utilidades varias
@@ -30,9 +29,10 @@ Friend NotInheritable Class Utilidades
     Friend Const lenFormato As Integer = 4
     '
     Friend Shared Function agruparPares(ByRef cod As String,
-                                      ByVal simbolo As Char,
-                                      ByVal parIni As String,
-                                      Optional ByVal parFin As String = "") As String()
+                                        simbolo As Char,
+                                        parIni As String,
+                                        Optional parFin As String = ""
+                                        ) As String()
         ' cada palabra que esté entre los caracteres indicados,
         ' estará en un índice del array,
         ' en la cadena original se sustituyen por [?nnn?], (? es el símbolo)
@@ -41,23 +41,20 @@ Friend NotInheritable Class Utilidades
         ' En el simbolo es importante que no se usen caracteres repetidos...
         ' es decir si se usa @ para los paréntesis, no usarlo para otra cosa,
         ' además de que no se deberían usar caracteres que después se puedan usar.
-        '
+
         '' Si el parFin es [EOF] se procesará desde parIni hasta fin de línea
         '' (esto es para los comentarios)
-        Dim i, j, n As Integer
         Dim niveles() As String
         Dim s1 As String
-        Dim sp1 As String = "sñ" & simbolo
-        Dim sp2 As String = simbolo & "ñs"
-        '
-        n = -1
+        Dim sp1 = "sñ" & simbolo
+        Dim sp2 = simbolo & "ñs"
+        Dim i As Integer
+        Dim j As Integer
+        Dim n = -1
         ReDim niveles(0)
-        '
-        i = 0
-        j = 0
+
         If parFin = "" Then parFin = parIni
-        '
-        '
+
         ' Si son iguales, hay que hacerlo de otra forma...
         If parIni = parFin Then
             Do
@@ -108,30 +105,29 @@ Friend NotInheritable Class Utilidades
                 End If
             Loop
         End If
-        '
+
         ' Si no se ha procesado nada, 
         ' asignar la cadena entera
         If niveles.Length = 1 AndAlso niveles(0) = "" Then
-            niveles(0) = " " ' s
+            niveles(0) = " "
         End If
-        '
+
         Return niveles
     End Function
     '
-    Friend Shared Function reagruparPares(ByVal niveles() As String,
-                                        ByVal s As String,
-                                        ByVal simbolo As Char) As String
+    Friend Shared Function reagruparPares(niveles() As String,
+                                          s As String,
+                                          simbolo As Char
+                                          ) As String
         ' Devuelve la cadena con los caracteres que antes se agruparon
-        Dim i, j As Integer
-        Dim sVar As String
-        Dim sp1 As String = "sñ" & simbolo
-        Dim sp2 As String = simbolo & "ñs"
-        '
-        j = niveles.Length - 1
-        For n As Integer = 0 To j
+        Dim i As Integer
+        Dim sp1 = "sñ" & simbolo
+        Dim sp2 = simbolo & "ñs"
+
+        Dim j = niveles.Length - 1
+        For n = 0 To j
             If niveles(n) <> "" Then
-                '
-                sVar = sp1 & n.ToString(formatoNivel) & sp2
+                Dim sVar = sp1 & n.ToString(formatoNivel) & sp2
                 ' Comprobar si esta variable está en alguno de los elementos del array
                 ' si es así, sustituirla por el valor correspondiente
                 For i = 0 To j
@@ -142,10 +138,8 @@ Friend NotInheritable Class Utilidades
                 s = s.Replace(sVar, niveles(n))
             End If
         Next
-        '
+
         Return s
     End Function
 
 End Class
-
-'End Namespace

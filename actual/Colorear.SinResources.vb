@@ -1698,55 +1698,6 @@ zeroinit
                 Return LangsKeywords(le.ToString).Split(vbCrLf.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
         End Select
 
-        'Dim palabras = LangsKeywords(le.ToString).Split(vbCrLf.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
-
-        'Dim palabras() As String = Nothing
-        'Select Case le
-        '    Case Lenguajes.CS
-        '        palabras = LangsKeywords(le.ToString).Split(vbCrLf.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
-        '    Case Lenguajes.VB ', Lenguajes.VB6
-        '        palabras = GetLang("vbnet").Split(vbCrLf.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
-        '                ' Añado las palabras exclusivas para VB6    (18/Dic/05)
-        '    Case Lenguajes.VB6
-        '        palabras = GetLang("vb6").Split(vbCrLf.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
-        '    Case Lenguajes.dotNet
-        '        palabras = GetLang("dotnet").Split(vbCrLf.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
-        '    Case Lenguajes.Java
-        '        palabras = GetLang("java").Split(vbCrLf.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
-        '    Case Lenguajes.FSharp
-        '        palabras = GetLang("fsharp").Split(vbCrLf.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
-        '    Case Lenguajes.SQL
-        '        palabras = GetLang("sql").Split(vbCrLf.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
-        '    Case Lenguajes.CPP
-        '        palabras = GetLang("cpp").Split(vbCrLf.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
-        '    Case Lenguajes.Pascal
-        '        palabras = GetLang("pascal").Split(vbCrLf.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
-        '    Case Lenguajes.IL
-        '        palabras = GetLang("IL").Split(vbCrLf.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
-        '        'Case Lenguajes.XML
-        '        '    palabras = Nothing
-        'End Select
-
-        'Return palabras
-    End Function
-
-    ''' <summary>
-    ''' Recupera las palabras del lenguaje indicado.
-    ''' </summary>
-    ''' <param name="lang">Cadena con el nombre abreviado del lenguaje</param>
-    Public Shared Function GetLang(lang As String) As String
-        Return LangsKeywords(lang)
-
-        'Dim fic = $"{lang}.txt"
-        'Dim bin = System.IO.Path.Combine(System.Environment.CurrentDirectory, "langs")
-        'Dim path = System.IO.Path.Combine(bin, fic)
-        'Dim res = ""
-
-        'Using sr As New System.IO.StreamReader(path, Text.Encoding.Default, True)
-        '    res = sr.ReadToEnd()
-        'End Using
-
-        'Return res
     End Function
 
 End Class

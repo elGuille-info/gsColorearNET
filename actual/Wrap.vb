@@ -10,7 +10,7 @@
 ' Revisado el 08/Oct/2002   Algunos ajustes cuando la cadena contiene intro
 ' Revisado el 30/Nov/2005   Convertida a VB2005 y PropperText
 '
-' ©Guillermo 'guille' Som, 1998-2002, 2005
+' ©Guillermo 'guille' Som, 1998-2002, 2005, 2020
 '
 ' Esta clase tiene los siguientes métodos (funciones)
 '   Justificar      Justifica la cadena,
@@ -32,20 +32,17 @@
 '   Separadores     Para indicar los separadores a usar
 '------------------------------------------------------------------------------
 Option Strict On
+Option Infer On
 
 Imports Microsoft.VisualBasic
-'Imports vb = Microsoft.VisualBasic
 Imports gsColorearNET.VBCompat
 Imports System
-
-'Namespace elGuille.Util.Developer
 
 ''' <summary>
 ''' Clase para realizar cortes de palabras de forma apropiada
 ''' </summary>
 Public Class Wrap
     Const cSeparadores As String = " ªº\!|@#$%&/()=?¿'¡[]*+{}<>,.-;:_"
-    Private Shared sSeparadores As String = vbCr & vbLf & vbTab & cSeparadores & ChrW(34)
 
     ''' <summary>
     ''' Alineación a usar con PropperWrap.
@@ -79,10 +76,9 @@ Public Class Wrap
     ''' </param>
     ''' <returns>
     ''' </returns>
-    Public Shared Function PropperWrap(
-                        ByVal sCadena As String,
-                        ByVal nCaracteres As Integer
-                        ) As String
+    Public Shared Function PropperWrap(sCadena As String,
+                                       nCaracteres As Integer
+                                       ) As String
         Return PropperWrap(sCadena, nCaracteres, ePropperWrapConstants.pwLeft)
     End Function
 
@@ -100,10 +96,10 @@ Public Class Wrap
     ''' <seealso cref="ePropperWrapConstants">ePropperWrapConstants</seealso>
     ''' </param>
     ''' <returns></returns>
-    Public Shared Function PropperWrap(
-                        ByVal sCadena As String,
-                        ByVal nCaracteres As Integer,
-                        ByVal desdeDonde As ePropperWrapConstants) As String
+    Public Shared Function PropperWrap(sCadena As String,
+                                       nCaracteres As Integer,
+                                       desdeDonde As ePropperWrapConstants
+                                       ) As String
         ' Devuelve la cadena que habría que imprimir para mostrar los
         ' caracteres indicados, sin cortar una palabra.
         ' Esto es para los casos en los que se quiera usar:
@@ -121,7 +117,7 @@ Public Class Wrap
             End If
         Else
             For i = nCaracteres To 1 Step -1
-                If InStr(sSeparadores, Mid(sCadena, i, 1)) > 0 Then
+                If InStr(Separadores, Mid(sCadena, i, 1)) > 0 Then
                     ' Si se especifica desde la izquierda
                     If desdeDonde = ePropperWrapConstants.pwLeft Then
                         sCadena = Left(sCadena, i)
@@ -143,7 +139,7 @@ Public Class Wrap
     ''' <param name="nCaracteres"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Shared Function PropperRight(ByVal sCadena As String, ByVal nCaracteres As Integer) As String
+    Public Shared Function PropperRight(sCadena As String, nCaracteres As Integer) As String
         Return PropperWrap(sCadena, nCaracteres, ePropperWrapConstants.pwRight)
     End Function
 
@@ -155,10 +151,10 @@ Public Class Wrap
     ''' <param name="RestoNoUsado"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Shared Function PropperMid(
-                        ByVal sCadena As String,
-                        ByVal nCaracteres As Integer,
-                        Optional ByVal RestoNoUsado As Integer = 0) As String
+    Public Shared Function PropperMid(sCadena As String,
+                                      nCaracteres As Integer,
+                                      Optional RestoNoUsado As Integer = 0
+                                      ) As String
         Return PropperWrap(sCadena, nCaracteres, ePropperWrapConstants.pwMid)
     End Function
 
@@ -169,7 +165,7 @@ Public Class Wrap
     ''' <param name="nCaracteres"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Shared Function PropperLeft(ByVal sCadena As String, ByVal nCaracteres As Integer) As String
+    Public Shared Function PropperLeft(sCadena As String, nCaracteres As Integer) As String
         Return PropperWrap(sCadena, nCaracteres, ePropperWrapConstants.pwLeft)
     End Function
 
@@ -181,10 +177,9 @@ Public Class Wrap
     ''' <param name="justif"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Shared Function PropperJust(
-                        ByVal cadena As String,
-                        Optional ByVal longitud As Integer = 70,
-                        Optional ByVal justif As Boolean = True) As String
+    Public Shared Function PropperJust(cadena As String,
+                                       Optional longitud As Integer = 70,
+                                       Optional justif As Boolean = True) As String
         '--------------------------------------------------------------------------
         ' Justifica la cadena según los caracteres indicados            ( 3/Ene/99)
         ' Esto sólo será útil si el resultado se muestra con fuente no proporcional
@@ -195,14 +190,12 @@ Public Class Wrap
         ' Devuelve:
         '   La cadena una vez manipulada
         '--------------------------------------------------------------------------
-        Dim sLinea As String
         Dim sTmp As String
-        Dim sTmp2 As String = ""
-        Dim i As Integer
+        Dim sTmp2 = ""
 
         Do
-            'Los cambios de línea se consideran por separado
-            i = InStr(cadena, vbCrLf)
+            ' Los cambios de línea se consideran por separado
+            Dim i = InStr(cadena, vbCrLf)
             If i > 0 Then
                 sTmp = Left(cadena, i - 1)
                 cadena = Mid(cadena, i + 2)
@@ -211,9 +204,9 @@ Public Class Wrap
                 cadena = ""
             End If
             Do
-                sLinea = PropperWrap(sTmp, longitud, ePropperWrapConstants.pwLeft)
+                Dim sLinea = PropperWrap(sTmp, longitud, ePropperWrapConstants.pwLeft)
                 If sTmp = sLinea Then
-                    'no justificar cuando es el final de línea
+                    ' no justificar cuando es el final de línea
                     sTmp = ""
                 Else
                     sTmp = Mid(sTmp, Len(sLinea) + 1)
@@ -224,6 +217,7 @@ Public Class Wrap
                 sTmp2 &= sLinea & vbCrLf
             Loop While Len(sTmp) > 0
         Loop While Len(cadena) > 0
+
         Return sTmp2
     End Function
 
@@ -235,31 +229,25 @@ Public Class Wrap
     ''' <param name="longitud"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Shared Function Justificar(
-                        ByVal cadena As String,
-                        Optional ByVal longitud As Integer = 70) As String
+    Public Shared Function Justificar(cadena As String,
+                                      Optional longitud As Integer = 70
+                                      ) As String
         ' Justifica la cadena, añadiendo espacios hasta conseguir la longitud deseada
-        Dim i As Integer
-        Dim j As Integer
-        Dim k As Integer
-        Dim hallado As Boolean
-        Dim n As Integer
-
         cadena = Trim(cadena)
         If Len(cadena) < longitud Then
-            k = 1
-            n = 0
-            '
-            hallado = False
+            Dim k = 1
+            Dim n = 0
+
+            Dim hallado = False
             Do
-                For i = 1 To Len(sSeparadores)
-                    j = InStr(k, cadena, Mid(sSeparadores, i, 1))
+                For i = 1 To Len(Separadores)
+                    Dim j = InStr(k, cadena, Mid(Separadores, i, 1))
                     If j > 0 Then
                         cadena = Left(cadena, j) & " " & Mid(cadena, j + 1)
                         k = j + 1
-                        'Buscar el siguiente caracter que no sea un separador
+                        ' Buscar el siguiente caracter que no sea un separador
                         For j = k + 1 To Len(cadena)
-                            If InStr(sSeparadores, Mid(cadena, j, 1)) = 0 Then
+                            If InStr(Separadores, Mid(cadena, j, 1)) = 0 Then
                                 k = j
                                 Exit For
                             End If
@@ -289,17 +277,11 @@ Public Class Wrap
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Shared Property Separadores() As String
-        Get
-            Return sSeparadores
-        End Get
-        Set(ByVal value As String)
-            sSeparadores = value
-        End Set
-    End Property
+    Public Shared Property Separadores() As String = vbCr & vbLf & vbTab & cSeparadores & ChrW(34)
 
     ' Para usar LoopPropperWrap                                 (30/Nov/05)
     ' de esta forma devuelve el texto correcto de una vez
+
     ''' <summary>
     ''' Devuelve el código ajustado de una pasada.
     ''' Internamente usa <seealso cref="LoopPropperWrap">
@@ -310,12 +292,12 @@ Public Class Wrap
     ''' <param name="desdeDonde"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Shared Function PropperText(
-                        ByVal sCadena As String,
-                        Optional ByVal nCaracteres As Integer = 70,
-                        Optional ByVal desdeDonde As ePropperWrapConstants = ePropperWrapConstants.pwLeft) As String
+    Public Shared Function PropperText(sCadena As String,
+                                       Optional nCaracteres As Integer = 70,
+                                       Optional desdeDonde As ePropperWrapConstants = ePropperWrapConstants.pwLeft
+                                       ) As String
         Dim sb As New System.Text.StringBuilder
-        Dim s As String = sCadena
+        Dim s = sCadena
         sb.AppendFormat("{0}{1}", LoopPropperWrap(s, nCaracteres, desdeDonde), vbCrLf)
         While Len(s) > 0
             s = LoopPropperWrap()
@@ -336,17 +318,16 @@ Public Class Wrap
     ''' <param name="desdeDonde"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Shared Function LoopPropperWrap(
-                        Optional ByVal sCadena As String = "",
-                        Optional ByVal nCaracteres As Integer = 70,
-                        Optional ByVal desdeDonde As ePropperWrapConstants = ePropperWrapConstants.pwLeft) As String
+    Public Shared Function LoopPropperWrap(Optional sCadena As String = "",
+                                           Optional nCaracteres As Integer = 70,
+                                           Optional desdeDonde As ePropperWrapConstants = ePropperWrapConstants.pwLeft
+                                           ) As String
         ' Repite la justificación hasta que la cadena esté vacia        (20/Ago/01)
         ' Devolviendo cada vez el número de caracteres indicados
         Static sCadenaCopia As String
         Static nCaracteresCopia As Integer
         Static desdeDondeCopia As ePropperWrapConstants
-        Dim s As String
-        '
+
         ' Si la cadena es una cadena vacía, es que se continua "partiendo"
         ' sino, es la primera llamada
         If Len(sCadena) > 0 Then
@@ -359,30 +340,10 @@ Public Class Wrap
             nCaracteres = nCaracteresCopia
             desdeDonde = desdeDondeCopia
         End If
-        '
-        ' ESTO NO ES NECESARIO
-        ' (además de que se queda "colgao")
-        '    ' ya que los cambios de líneas se consideran separadores
-        '    ' Si hay un vbCrLf, mostrar hasta ese caracter
-        '    Dim i As Long
-        '    i = InStr(sCadena, vbCrLf)
-        '    If i Then
-        '        If i < nCaracteres Then
-        '            nCaracteres = i '- 1
-        '            sCadena = Left$(sCadena, i - 1) & " " & Mid$(sCadena, i)
-        '        End If
-        '    End If
-        '
-        '
-        s = PropperWrap(sCadena, nCaracteres, desdeDonde)
+
+        Dim s = PropperWrap(sCadena, nCaracteres, desdeDonde)
         sCadenaCopia = Mid(sCadena, Len(s) + 1)
-        '' Si termina con vbCrLf quitárselo...                           (08/Oct/02)
-        'If Right(s, 2) = vbCrLf Then
-        '    s = Left(s, Len(s) - 2)
-        'End If
-        '
+
         Return s.TrimEnd
     End Function
 End Class
-
-'End Namespace
