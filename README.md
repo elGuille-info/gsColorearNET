@@ -4,7 +4,7 @@ Biblioteca de clases para colorear código y convertirlo en formato HTML (para u
 El lenguaje de código usado es Visual Basic .NET.<br>
 <br>
 <br>
-La carpeta src tiene el código del proyecto actual con las modificaciones (si sé hacerlas) el resto son copias de las distintas versiones creadas.<br>
+La carpeta <b>actual</b> tiene el código del proyecto actual con las modificaciones (si sé hacerlas) el resto son copias de las distintas versiones creadas.<br>
 <br>
 
 IMPORTANTE:
