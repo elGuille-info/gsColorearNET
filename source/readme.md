@@ -1,5 +1,8 @@
 Directorio para el código fuente de las diferentes versiones de gsColorearNET.<br>
 <br>
+Directorio v1.0.0.6<br>
+Es el código de la versión 1.0.0.0 revisión 1.0.0.6 (paquete NuGet 1.0.0.4)<br>
+<br>
 Directorio v1.0.0.5<br>
 Es el código de la versión 1.0.0.0 revisión 1.0.0.5 (paquete NuGet 1.0.0.3)<br>
 <br>
