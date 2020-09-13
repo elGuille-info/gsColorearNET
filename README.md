@@ -23,7 +23,6 @@ Uso de esta DLL y de las versiones anteriores:
 Actualmente esta biblioteca (o sus variantes anteriores para .NET Framework y .NET Core 3.1) las utilizo personalmente (algunas están distribuidas en la red).<br>
 En estas aplicaciones si no indico el nombre de la DLL de colorear será gsColorear para .NET Framework, en los casos que utilizo gsColorearNET es instalándola desde 
 el paquete de <a href="https://www.nuget.org/packages/gsColorearNET/">NuGet</a>.<br>
-<br>
 gsColorearCodigo v1.0.3.21 para .NET Framework 2.0<br>
 gsColorearCodigo v1.0.7.1 para .NET Framework 4.7.2<br>
 gsColorearCodigo v1.0.8.6 para .NET Framework 4.8 (utiliza gsColorearNET) (1)<br>
@@ -43,5 +42,5 @@ gsColorearCodigoNET v1.1.0.0 para .NET 5.0 Preview 8 (utilidad convertida para .
 <br>
 <br> 
 Guillermo<br>
-
-Actualizado el 13 de septimbre de 2020 a las 12:53 GMT+2
+<br>
+Actualizado el 13 de septimbre de 2020 a las 18:16 GMT+2
