@@ -5,7 +5,7 @@ El lenguaje de código usado es Visual Basic .NET.<br>
 <br>
 <br>
 La carpeta <b>actual</b> tiene el código del proyecto actual con las modificaciones.<br>
-Lo que hay en la carpeta <b>souerce</b> son copias de las distintas versiones creadas.<br>
+Lo que hay en la carpeta <b>source</b> son copias de las distintas versiones creadas.<br>
 <br>
 
 IMPORTANTE:
