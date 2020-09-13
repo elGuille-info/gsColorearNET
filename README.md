@@ -1,13 +1,15 @@
 # gsColorearNET
 Biblioteca de clases para colorear código y convertirlo en formato HTML (para usar en sitios WEB)
 <br> 
- 
+El lenguaje de código usado es Visual Basic .NET.<br>
+<br>
+<br>
+La carpeta src tiene el código del proyecto actual con las modificaciones (si sé hacerlas) el resto son copias de las distintas versiones creadas.<br>
+<br>
+
 IMPORTANTE:
 ===========
 Esta biblioteca está codificada para usar en .NET Standard 2.0 y debe seguir siendo así, con idea de que sea compatiuble con las versiones de .NET Framework 4.6.1 a 4.8.
-<br>
- 
-El lenguaje de código usado es Visual Basic .NET.<br>
 <br>
 Puedes usar este código en tus proyectos sin ninguna restricción, así como la DLL una vez compilada, la cual puedes descargarla o instalarla desde el paquete de NuGet:
 https://www.nuget.org/packages/gsColorearNET/<br>
@@ -34,4 +36,4 @@ gsColorearCodigoNET v1.1.0.0 para .NET 5.0 Preview 8 (utilidad convertida para .
  
 Guillermo<br>
 
-Actualizado el 12 de septimbre de 2020 a las 21:36
+Actualizado el 13 de septimbre de 2020 a las 11:37 GMT+2
