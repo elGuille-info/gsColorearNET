@@ -27,8 +27,9 @@
 '
 ' ©Guillermo 'guille' Som, 2005-2006, 2020
 '------------------------------------------------------------------------------
-Option Explicit On 
+Option Explicit On
 Option Strict On
+Option Infer On
 
 Imports Microsoft.VisualBasic
 'Imports vb = Microsoft.VisualBasic
@@ -40,7 +41,6 @@ Imports System.Configuration
 Imports System.Xml
 Imports System.IO
 
-'Namespace elGuille.Util.Developer
 
 ''' <summary>
 ''' Manejar ficheros de configuración
@@ -50,10 +50,9 @@ Public Class Config
     '----------------------------------------------------------------------
     ' Los campos y métodos privados
     '----------------------------------------------------------------------
-    Private mGuardarAlAsignar As Boolean = True
     Private Const configuration As String = "configuration/"
-    Private ficConfig As String = ""
     Private configXml As New XmlDocument
+
     '
     ''' <summary>
     ''' Si se debe guardar automáticamente después de asignar un valor.
@@ -64,15 +63,8 @@ Public Class Config
     ''' Si no se guarda automáticamente hay que llamar
     ''' al método Save para que se guarden en el fichero.
     ''' </remarks>
-    Public Property GuardarAlAsignar() As Boolean
-        Get
-            Return mGuardarAlAsignar
-        End Get
-        Set(ByVal value As Boolean)
-            mGuardarAlAsignar = value
-        End Set
-    End Property
-    '
+    Public Property GuardarAlAsignar() As Boolean = True
+
     ''' <summary>
     ''' Recupera el valor de la clave y la sección indicados.
     ''' </summary>
@@ -84,9 +76,10 @@ Public Class Config
     ''' <remarks>
     ''' Existen sobrecargas para los tipos String, Integer y Boolean
     ''' </remarks>
-    Public Function GetValue(ByVal seccion As String, ByVal clave As String) As String
+    Public Function GetValue(seccion As String, clave As String) As String
         Return GetValue(seccion, clave, "")
     End Function
+
     ''' <summary>
     ''' Recupera el valor de la clave y la sección indicados.
     ''' </summary>
@@ -102,9 +95,10 @@ Public Class Config
     ''' <remarks>
     ''' Existen sobrecargas para los tipos String, Integer y Boolean
     ''' </remarks>
-    Public Function GetValue(ByVal seccion As String, ByVal clave As String, ByVal predeterminado As String) As String
+    Public Function GetValue(seccion As String, clave As String, predeterminado As String) As String
         Return cfgGetValue(seccion, clave, predeterminado)
     End Function
+
     ''' <summary>
     ''' Recupera el valor de la clave y la sección indicados.
     ''' </summary>
@@ -120,7 +114,7 @@ Public Class Config
     ''' <remarks>
     ''' Existen sobrecargas para los tipos String, Integer y Boolean
     ''' </remarks>
-    Public Function GetValue(ByVal seccion As String, ByVal clave As String, ByVal predeterminado As Integer) As Integer
+    Public Function GetValue(seccion As String, clave As String, predeterminado As Integer) As Integer
         Return CInt(cfgGetValue(seccion, clave, predeterminado.ToString))
     End Function
 
@@ -128,7 +122,7 @@ Public Class Config
     ''' Recupera un valor de la calve y sección indicados, el valor devuelto es Double.
     ''' </summary>
     ''' <remarks>05/Sep/2020</remarks>
-    Public Function GetValue(ByVal seccion As String, ByVal clave As String, ByVal predeterminado As Double) As Double
+    Public Function GetValue(seccion As String, clave As String, predeterminado As Double) As Double
         Return CDbl(cfgGetValue(seccion, clave, predeterminado.ToString))
     End Function
 
@@ -148,15 +142,9 @@ Public Class Config
     ''' Existen sobrecargas para los tipos String, Integer y Boolean.
     ''' Cuando es Boolean, se guarda 1 ó 0 según sea True o False.
     ''' </remarks>
-    Public Function GetValue(ByVal seccion As String, ByVal clave As String, ByVal predeterminado As Boolean) As Boolean
-        Dim def As String = "0"
-        If predeterminado Then def = "1"
-        def = cfgGetValue(seccion, clave, def)
-        If def = "1" Then
-            Return True
-        Else
-            Return False
-        End If
+    Public Function GetValue(seccion As String, clave As String, predeterminado As Boolean) As Boolean
+        Return If(cfgGetValue(seccion, clave, If(predeterminado, "1", "0")) = "1",
+                    True, False)
     End Function
 
     ''' <summary>
@@ -170,9 +158,10 @@ Public Class Config
     ''' <remarks>
     ''' Existen sobrecargas para los tipos String, Integer y Boolean.
     ''' </remarks>
-    Public Sub SetValue(ByVal seccion As String, ByVal clave As String, ByVal valor As String)
+    Public Sub SetValue(seccion As String, clave As String, valor As String)
         cfgSetValue(seccion, clave, valor)
     End Sub
+
     ''' <summary>
     ''' Asigna el valor en la clave y la sección indicados.
     ''' </summary>
@@ -184,7 +173,7 @@ Public Class Config
     ''' <remarks>
     ''' Existen sobrecargas para los tipos String, Integer y Boolean.
     ''' </remarks>
-    Public Sub SetValue(ByVal seccion As String, ByVal clave As String, ByVal valor As Integer)
+    Public Sub SetValue(seccion As String, clave As String, valor As Integer)
         cfgSetValue(seccion, clave, valor.ToString)
     End Sub
 
@@ -192,7 +181,7 @@ Public Class Config
     ''' Asigna el valor en la clave y la sección indicados usando el valor Double.
     ''' </summary>
     ''' <remarks>05/Sep/20</remarks>
-    Public Sub SetValue(ByVal seccion As String, ByVal clave As String, ByVal valor As Double)
+    Public Sub SetValue(seccion As String, clave As String, valor As Double)
         cfgSetValue(seccion, clave, valor.ToString)
     End Sub
 
@@ -206,9 +195,11 @@ Public Class Config
     ''' <remarks>
     ''' 11/Sep/2020
     ''' </remarks>
-    Public Sub SetKeyValue(ByVal seccion As String, ByVal clave As String, ByVal valor As Double)
+    Public Sub SetKeyValue(seccion As String, clave As String, valor As Double)
         cfgSetKeyValue(seccion, clave, valor.ToString)
     End Sub
+
+#Region " En .NET Standard 2.0 no hay definición de System.Windows.Forms.CheckState "
 
     '''' <summary>
     '''' Devuelve el valor del tipo System.Windows.Forms.CheckState
@@ -245,6 +236,7 @@ Public Class Config
     'Public Sub SetKeyValue(seccion As String, clave As String, valor As System.Windows.Forms.CheckState)
     '    cfgSetKeyValue(seccion, clave, valor.ToString)
     'End Sub
+#End Region
 
     ''' <summary>
     ''' Asigna el valor en la clave y la sección indicados.
@@ -258,12 +250,8 @@ Public Class Config
     ''' Existen sobrecargas para los tipos String, Integer y Boolean.
     ''' Cuando es Boolean, se guarda 1 ó 0 según sea True o False.
     ''' </remarks>
-    Public Sub SetValue(ByVal seccion As String, ByVal clave As String, ByVal valor As Boolean)
-        If valor Then
-            cfgSetValue(seccion, clave, "1")
-        Else
-            cfgSetValue(seccion, clave, "0")
-        End If
+    Public Sub SetValue(seccion As String, clave As String, valor As Boolean)
+        cfgSetValue(seccion, clave, If(valor, "1", "0"))
     End Sub
 
     ''' <summary>
@@ -278,9 +266,10 @@ Public Class Config
     ''' <remarks>
     ''' Existen sobrecargas para los tipos String, Integer y Boolean.
     ''' </remarks>
-    Public Sub SetKeyValue(ByVal seccion As String, ByVal clave As String, ByVal valor As String)
+    Public Sub SetKeyValue(seccion As String, clave As String, valor As String)
         cfgSetKeyValue(seccion, clave, valor)
     End Sub
+
     ''' <summary>
     ''' Asigna el valor en la clave y la sección indicados.
     ''' Usando atributos dentro de la sección.
@@ -293,9 +282,10 @@ Public Class Config
     ''' <remarks>
     ''' Existen sobrecargas para los tipos String, Integer y Boolean.
     ''' </remarks>
-    Public Sub SetKeyValue(ByVal seccion As String, ByVal clave As String, ByVal valor As Integer)
+    Public Sub SetKeyValue(seccion As String, clave As String, valor As Integer)
         cfgSetKeyValue(seccion, clave, valor.ToString)
     End Sub
+
     ''' <summary>
     ''' Asigna el valor en la clave y la sección indicados.
     ''' Usando atributos dentro de la sección.
@@ -309,24 +299,19 @@ Public Class Config
     ''' Existen sobrecargas para los tipos String, Integer y Boolean.
     ''' Cuando es Boolean, se guarda 1 ó 0 según sea True o False.
     ''' </remarks>
-    Public Sub SetKeyValue(ByVal seccion As String, ByVal clave As String, ByVal valor As Boolean)
-        If valor Then
-            cfgSetKeyValue(seccion, clave, "1")
-        Else
-            cfgSetKeyValue(seccion, clave, "0")
-        End If
+    Public Sub SetKeyValue(seccion As String, clave As String, valor As Boolean)
+        cfgSetValue(seccion, clave, If(valor, "1", "0"))
     End Sub
 
     ''' <summary>
     ''' Elimina la sección, en realidad la deja vacía,
     ''' </summary>
     ''' <param name="seccion">La sección a eliminar</param>
-    Public Sub RemoveSection(ByVal seccion As String)
-        Dim n As XmlNode
-        n = configXml.SelectSingleNode(configuration & seccion)
-        If Not n Is Nothing Then
+    Public Sub RemoveSection(seccion As String)
+        Dim n = configXml.SelectSingleNode(configuration & seccion)
+        If n IsNot Nothing Then
             n.RemoveAll()
-            If mGuardarAlAsignar Then
+            If GuardarAlAsignar Then
                 Me.Save()
             End If
         End If
@@ -341,9 +326,7 @@ Public Class Config
     ''' </returns>
     Public Function Secciones() As List(Of String)
         Dim d As New List(Of String)
-        Dim root As XmlNode
-        Dim s As String = "configuration"
-        root = configXml.SelectSingleNode(s)
+        Dim root = configXml.SelectSingleNode("configuration")
         If root IsNot Nothing Then
             For Each n As XmlNode In root.ChildNodes
                 d.Add(n.Name)
@@ -362,11 +345,10 @@ Public Class Config
     ''' Devuelve una colección de tipo Dictionary(Of String, String)
     ''' con las claves de la sección indicada.
     ''' </returns>
-    Public Function Claves(ByVal seccion As String) As Dictionary(Of String, String)
+    Public Function Claves(seccion As String) As Dictionary(Of String, String)
         Dim d As New Dictionary(Of String, String)
-        Dim root As XmlNode
         seccion = seccion.Replace(" ", "_")
-        root = configXml.SelectSingleNode(configuration & seccion)
+        Dim root = configXml.SelectSingleNode(configuration & seccion)
         If root IsNot Nothing Then
             For Each n As XmlNode In root.ChildNodes
                 If d.ContainsKey(n.Name) = False Then
@@ -376,7 +358,7 @@ Public Class Config
         End If
         Return d
     End Function
-    '
+
     ''' <summary>
     ''' Guardar los datos en el fichero de configuración.
     ''' </summary>
@@ -384,7 +366,7 @@ Public Class Config
     ''' Si no se llama a este método, no se guardará de forma permanente.
     ''' </remarks>
     Public Sub Save()
-        configXml.Save(ficConfig)
+        configXml.Save(FileName)
     End Sub
 
     ''' <summary>
@@ -392,17 +374,17 @@ Public Class Config
     ''' Si no existe, se crea uno nuevo
     ''' </summary>
     Public Sub Read()
-        Dim fic As String = ficConfig
-        Const revDate As String = "Sun, 27 Aug 2006 18:12:04 GMT"
+        Dim fic = FileName
+        Const revDate As String = "Sun, 13 Sep 2020 13:25:00 GMT"
         If File.Exists(fic) Then
             configXml.Load(fic)
             ' Actualizar los datos de la información de esta clase
-            Dim b As Boolean = mGuardarAlAsignar
-            mGuardarAlAsignar = False
+            Dim b = GuardarAlAsignar
+            GuardarAlAsignar = False
             Me.SetValue("configXml_Info", "info", "Generado con Config para Visual Basic 2005")
             Me.SetValue("configXml_Info", "revision", revDate)
             Me.SetValue("configXml_Info", "formatoUTF8", "El formato de este fichero debe ser UTF-8")
-            mGuardarAlAsignar = b
+            GuardarAlAsignar = b
             Me.Save()
         Else
             ' Crear el XML de configuración con la sección General
@@ -420,20 +402,20 @@ Public Class Config
             sb.Append("<!-- La clase siempre los añade como un elemento -->")
             sb.Append("<Copyright>©Guillermo 'guille' Som, 2005-2006</Copyright>")
             sb.Append("</General>")
-            '
+
             sb.AppendFormat("<configXml_Info>{0}", vbCrLf)
             sb.AppendFormat("<info>Generado con Config para Visual Basic 2005</info>{0}", vbCrLf)
             sb.AppendFormat("<copyright>©Guillermo 'guille' Som, 2005-2006</copyright>{0}", vbCrLf)
             sb.AppendFormat("<revision>{0}</revision>{1}", revDate, vbCrLf)
             sb.AppendFormat("<formatoUTF8>El formato de este fichero debe ser UTF-8</formatoUTF8>{0}", vbCrLf)
             sb.AppendFormat("</configXml_Info>{0}", vbCrLf)
-            '
+
             sb.Append("</configuration>")
             ' Asignamos la cadena al objeto
             configXml.LoadXml(sb.ToString)
-            '
+
             ' Guardamos el contenido de configXml y creamos el fichero
-            configXml.Save(ficConfig)
+            configXml.Save(FileName)
         End If
     End Sub
 
@@ -448,31 +430,16 @@ Public Class Config
     ''' Al asignarlo, NO se lee el contenido del fichero,
     ''' habrá que llamar al método <seealso cref="Read">Read</seealso>
     ''' </remarks>
-    Public Property FileName() As String
-        Get
-            Return ficConfig
-        End Get
-        Set(ByVal value As String)
-            ' Al asignarlo, NO leemos el contenido del fichero
-            ficConfig = value
-            'LeerFile()
-        End Set
-    End Property
+    Public Property FileName() As String = ""
 
-    'Public Sub New()
-    '    ' Asignamos automáticamente el nombre del fichero, y lo leemos
-    '    ' Este constructor no deberíamos usarlo si esta clase está en una DLL
-    '    ficConfig = System.Reflection.Assembly.GetExecutingAssembly.Location & ".cfg"
-    '    Read()
-    'End Sub
     ''' <summary>
     ''' Constructor indicando el nombre del fichero a usar.
     ''' </summary>
     ''' <param name="fic">Nombre del fichero a usar</param>
-    Public Sub New(ByVal fic As String)
-        ficConfig = fic
+    Public Sub New(fic As String)
+        FileName = fic
         ' Por defecto se guarda al asignar los valores
-        mGuardarAlAsignar = True
+        GuardarAlAsignar = True
         Read()
     End Sub
 
@@ -484,25 +451,21 @@ Public Class Config
     ''' True si se guarda automáticamente al asignar,
     ''' ver <seealso cref="GuardarAlAsignar">GuardarAlAsignar</seealso>.
     ''' </param>
-    Public Sub New(ByVal fic As String, ByVal guardarAlAsignar As Boolean)
-        ficConfig = fic
-        mGuardarAlAsignar = guardarAlAsignar
+    Public Sub New(fic As String, guardarAlAsignar As Boolean)
+        FileName = fic
+        Me.GuardarAlAsignar = guardarAlAsignar
         Read()
     End Sub
+
     '
     '----------------------------------------------------------------------
     ' Los métodos privados
     '----------------------------------------------------------------------
     '
+
     ' El método interno para guardar los valores
     ' Este método siempre guardará en el formato <seccion><clave>valor</clave></seccion>
-    Private Sub cfgSetValue(
-                        ByVal seccion As String,
-                        ByVal clave As String,
-                        ByVal valor As String)
-        '
-        Dim n As XmlNode
-        '
+    Private Sub cfgSetValue(seccion As String, clave As String, valor As String)
         ' Filtrar los caracteres no válidos
         ' en principio solo comprobamos el espacio
         seccion = seccion.Replace(" ", "_")
@@ -510,13 +473,12 @@ Public Class Config
 
         ' Se comrpueba si es un elemento de la sección:
         '   <seccion><clave>valor</clave></seccion>
-        n = configXml.SelectSingleNode(configuration & seccion & "/" & clave)
-        If Not n Is Nothing Then
+        Dim n = configXml.SelectSingleNode(configuration & seccion & "/" & clave)
+        If n IsNot Nothing Then
             n.InnerText = valor
         Else
-            Dim root As XmlNode
             Dim elem As XmlElement
-            root = configXml.SelectSingleNode(configuration & seccion)
+            Dim root = configXml.SelectSingleNode(configuration & seccion)
             If root Is Nothing Then
                 ' Si no existe el elemento principal,
                 ' lo añadimos a <configuration>
@@ -524,7 +486,7 @@ Public Class Config
                 configXml.DocumentElement.AppendChild(elem)
                 root = configXml.SelectSingleNode(configuration & seccion)
             End If
-            If Not root Is Nothing Then
+            If root IsNot Nothing Then
                 ' Crear el elemento
                 elem = configXml.CreateElement(clave)
                 elem.InnerText = valor
@@ -532,8 +494,8 @@ Public Class Config
                 root.AppendChild(elem)
             End If
         End If
-        '
-        If mGuardarAlAsignar Then
+
+        If GuardarAlAsignar Then
             Me.Save()
         End If
     End Sub
@@ -542,25 +504,18 @@ Public Class Config
     ' Por ejemplo: <Seccion clave=valor>...</Seccion>
     ' También se usará para el formato de appSettings: <add key=clave value=valor />
     '   Aunque en este caso, debe existir el elemento a asignar.
-    Private Sub cfgSetKeyValue(
-                        ByVal seccion As String,
-                        ByVal clave As String,
-                        ByVal valor As String)
-        '
-        Dim n As XmlNode
-        '
+    Private Sub cfgSetKeyValue(seccion As String, clave As String, valor As String)
         ' Filtrar los caracteres no válidos
         ' en principio solo comprobamos el espacio
         seccion = seccion.Replace(" ", "_")
         clave = clave.Replace(" ", "_")
 
-        n = configXml.SelectSingleNode(configuration & seccion & "/add[@key=""" & clave & """]")
-        If Not n Is Nothing Then
+        Dim n = configXml.SelectSingleNode(configuration & seccion & "/add[@key=""" & clave & """]")
+        If n IsNot Nothing Then
             n.Attributes("value").InnerText = valor
         Else
-            Dim root As XmlNode
             Dim elem As XmlElement
-            root = configXml.SelectSingleNode(configuration & seccion)
+            Dim root = configXml.SelectSingleNode(configuration & seccion)
             If root Is Nothing Then
                 ' Si no existe el elemento principal,
                 ' lo añadimos a <configuration>
@@ -568,57 +523,48 @@ Public Class Config
                 configXml.DocumentElement.AppendChild(elem)
                 root = configXml.SelectSingleNode(configuration & seccion)
             End If
-            If Not root Is Nothing Then
+            If root IsNot Nothing Then
                 Dim a As XmlAttribute = CType(configXml.CreateNode(XmlNodeType.Attribute, clave, Nothing), XmlAttribute)
                 a.InnerText = valor
                 root.Attributes.Append(a)
             End If
         End If
-        '
-        If mGuardarAlAsignar Then
+
+        If GuardarAlAsignar Then
             Me.Save()
         End If
     End Sub
 
     ' Devolver el valor de la clave indicada
-    Private Function cfgGetValue(
-                        ByVal seccion As String,
-                        ByVal clave As String,
-                        ByVal valor As String
-                        ) As String
-        '
-        Dim n As XmlNode
-        '
+    Private Function cfgGetValue(seccion As String, clave As String, valor As String) As String
         ' Filtrar los caracteres no válidos
         ' en principio solo comprobamos el espacio
         seccion = seccion.Replace(" ", "_")
         clave = clave.Replace(" ", "_")
 
         ' Primero comprobar si están el formato de appSettings: <add key = clave value = valor />
-        n = configXml.SelectSingleNode(configuration & seccion & "/add[@key=""" & clave & """]")
-        If Not n Is Nothing Then
+        Dim n = configXml.SelectSingleNode(configuration & seccion & "/add[@key=""" & clave & """]")
+        If n IsNot Nothing Then
             Return n.Attributes("value").InnerText
         End If
-        '
+
         ' Después se comprueba si está en el formato <Seccion clave = valor>
         n = configXml.SelectSingleNode(configuration & seccion)
-        If Not n Is Nothing Then
+        If n IsNot Nothing Then
             Dim a As XmlAttribute = n.Attributes(clave)
-            If Not a Is Nothing Then
+            If a IsNot Nothing Then
                 Return a.InnerText
             End If
         End If
-        '
+
         ' Por último se comprueba si es un elemento de seccion:
         '   <seccion><clave>valor</clave></seccion>
         n = configXml.SelectSingleNode(configuration & seccion & "/" & clave)
-        If Not n Is Nothing Then
+        If n IsNot Nothing Then
             Return n.InnerText
         End If
-        '
+
         ' Si no existe, se devuelve el valor predeterminado
         Return valor
     End Function
 End Class
-
-'End Namespace
