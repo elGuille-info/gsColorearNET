@@ -4,7 +4,8 @@ Biblioteca de clases para colorear código y convertirlo en formato HTML (para u
 El lenguaje de código usado es Visual Basic .NET.<br>
 <br>
 <br>
-La carpeta <b>actual</b> tiene el código del proyecto actual con las modificaciones (si sé hacerlas) el resto son copias de las distintas versiones creadas.<br>
+La carpeta <b>actual</b> tiene el código del proyecto actual con las modificaciones.<br>
+Lo que hay en la carpeta <b>souerce</b> son copias de las distintas versiones creadas.<br>
 <br>
 
 IMPORTANTE:
@@ -36,4 +37,4 @@ gsColorearCodigoNET v1.1.0.0 para .NET 5.0 Preview 8 (utilidad convertida para .
  
 Guillermo<br>
 
-Actualizado el 13 de septimbre de 2020 a las 11:37 GMT+2
+Actualizado el 13 de septimbre de 2020 a las 12:53 GMT+2
