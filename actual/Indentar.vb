@@ -133,7 +133,8 @@ Public NotInheritable Class Indentar
         nTab = 0
         noEsInterfaz = 1
         For i As Integer = 0 To lineas.Length - 1
-            sb.Append(String.Concat(procesarLinea(lineas(i)), vbCrLf))
+            ' Usar vbCr en vez de vbCrLf                            (16/Sep/20)
+            sb.Append(String.Concat(procesarLinea(lineas(i)), vbCr))
         Next
 
         Return sb.ToString()

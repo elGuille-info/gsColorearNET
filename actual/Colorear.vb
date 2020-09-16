@@ -71,6 +71,8 @@
 '                       y donde puedo uso inferencia de tipos, quito los ByVal,
 '                       declaro las variables lo más cerca de su uso
 '                       y optimizo un poco el código.
+' 1.0.0.7   16/Sep/20   Cambio la función vb.Split para que no quite
+'                       las líneas vacías si no se indica expresamente.
 '
 ' ©Guillermo 'guille' Som, 2005-2007, 2018-2020
 '------------------------------------------------------------------------------
@@ -901,7 +903,10 @@ Public NotInheritable Class Colorear
 
             ' Es posible que solo tenga el vbLf
             If s.IndexOf(vbCrLf) > -1 Then
-                saCodigo = vb.Split(s, vbCrLf)
+                ' Si tiene vbCrLf quitar las repetidas              (16/Sep/20)
+                ' Y convertirlas en vbCr
+                s = s.Replace(vbCrLf & vbCrLf, vbCr)
+                saCodigo = vb.Split(s, vbCrLf, removeEmptyEnties:=False)
             ElseIf s.IndexOf(vbCr) > -1 Then
                 saCodigo = vb.Split(s, vbCr)
             Else

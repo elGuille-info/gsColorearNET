@@ -107,15 +107,35 @@ Public Class VBCompat
         Return str.Trim
     End Function
 
+    '''' <summary>
+    '''' Divide una cadena en elementos de un array.
+    '''' Usando el delimitador indicado.
+    '''' La función de Visual Basic NO quita las líneas vacías.
+    '''' </summary>
+    '''' <param name="Expression"></param>
+    '''' <param name="Delimiter"></param>
+    'Public Shared Function Split(Expression As String, Optional Delimiter As String = " ") As String()
+    '    'Return Expression.Split(Delimiter.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
+    '    Return Expression.Split(Delimiter.ToCharArray)
+    'End Function
+
     ''' <summary>
     ''' Divide una cadena en elementos de un array.
     ''' Usando el delimitador indicado.
+    ''' La función de Visual Basic NO quita las líneas vacías.
     ''' </summary>
     ''' <param name="Expression"></param>
     ''' <param name="Delimiter"></param>
+    ''' <param name="removeEmptyEnties">True si se deben quitar las líneas vacías</param>
     ''' <returns></returns>
-    Public Shared Function Split(Expression As String, Optional Delimiter As String = " ") As String()
-        Return Expression.Split(Delimiter.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
+    ''' <remarks>16/Sep/2020</remarks>
+    Public Shared Function Split(Expression As String,
+                                 Optional Delimiter As String = " ",
+                                 Optional removeEmptyEnties As Boolean = False) As String()
+        If removeEmptyEnties Then
+            Return Expression.Split(Delimiter.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
+        End If
+        Return Expression.Split(Delimiter.ToCharArray)
     End Function
 
     ''
