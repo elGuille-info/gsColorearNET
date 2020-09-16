@@ -46,7 +46,7 @@ Guillermo<br>
 <br>
 <h2>Actualizaciones</h2>
 v1.0.0.7 del 16 de septiembre de 2020<br>
-Cambio la función vb.Split para que no quite las líneas vacís si no se indica expresamente.<br>
+Cambio la función vb.Split para que no quite las líneas vacías si no se indica expresamente.<br>
 Corregido BUG que quitaba todas las líneas en blanco.<br>
 <br>
 <br>
