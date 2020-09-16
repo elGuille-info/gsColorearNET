@@ -43,4 +43,11 @@ gsColorearCodigoNET v1.1.0.0 para .NET 5.0 Preview 8 (utilidad convertida para .
 <br> 
 Guillermo<br>
 <br>
+<br>
+<h2>Actualizaciones</h2>
+v1.0.0.7 del 16 de septiembre de 2020<br>
+Cambio la función vb.Split para que no quite las líneas vacís si no se indica expresamente.<br>
+Corregido BUG que quitaba todas las líneas en blanco.<br>
+<br>
+<br>
 Actualizado el 16 de septimbre de 2020 a las 15:30 GMT+2
