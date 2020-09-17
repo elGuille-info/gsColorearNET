@@ -728,7 +728,8 @@ Public NotInheritable Class Colorear
             lineas(i) = lineas(i).Replace("\f1", "") '.Replace("\f0 ", "") '.Replace("\f2", "")
             'lineas(i) = lineas(i).Replace("\f0 ", "")
             ' Las que no le siguen un espacio suelen estar al final (17/Sep/20)
-            lineas(i) = lineas(i).Replace("\f0", "")
+            ' aquí dejarlo con el espacio
+            lineas(i) = lineas(i).Replace("\f0 ", "")
 
             ' Se supone que lineas(i) contiene lo que haya que colorear
             ' Dejar de analizar cuando se llegue a: \pard\
@@ -834,6 +835,17 @@ Public NotInheritable Class Colorear
         sb.Replace("\tab", vbTab)
 
         texto = sb.ToString
+
+        ' Quitar el último \f0 por el final                         (18/Sep/20)
+        j = texto.LastIndexOf("\f0")
+        If j > -1 Then
+            ' No se va a dar este caso, pero...
+            If j = 0 Then
+                texto = texto.Substring(j + 3)
+            Else
+                texto = texto.Substring(j - 1) & texto.Substring(j + 3)
+            End If
+        End If
 
         ' Quitar los espacios iniciales e indentarlo, si así se indica
         ' El problema es que al tener los <span no lo hace bien
