@@ -1,5 +1,7 @@
 Directorio para el código fuente de las diferentes versiones de gsColorearNET.<br>
 <br>
+<h1>Esta carpeta no la seguiré actualizando</h1>
+<br>
 Directorio v1.0.0.7<br>
 Es el código de la versión 1.0.0.0 revisión 1.0.0.7 (paquete NuGet 1.0.0.5)<br>
 <br>
@@ -24,7 +26,7 @@ Esa es la que suelo ir cambiando en cada actualización y solo cambiará a otra 
 La versión del paquete NuGet (Version) la iré incrementando en cada nueva publicación de un paquete.<br>
 <br>
 Guillermo<br>
-Actualizado el 16 de septiembre de 2020 a las 21:28
+Actualizado el 17 de septiembre de 2020 a las 13:15
 
 
 
