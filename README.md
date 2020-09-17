@@ -5,7 +5,7 @@ El lenguaje de código usado es Visual Basic .NET.<br>
 <br>
 <br>
 La carpeta <b>actual</b> tiene el código del proyecto actual con las modificaciones.<br>
-Lo que hay en la carpeta <b>source</b> son copias de las distintas versiones creadas.<br>
+Lo que hay en la carpeta <b>source</b> son copias de las distintas versiones creadas. <b>Esta carpeta no la seguiré actualizando</b>.<br>
 <br>
 
 IMPORTANTE:
@@ -45,9 +45,12 @@ Guillermo<br>
 <br>
 <br>
 <h2>Actualizaciones</h2>
+v1.0.0.8 del 17 de septiemrbe de 2020<br>
+Corregido un BUG que dejaba algún \f0 al final.<br>
+<br>
 v1.0.0.7 del 16 de septiembre de 2020<br>
 Cambio la función vb.Split para que no quite las líneas vacías si no se indica expresamente.<br>
 Corregido BUG que quitaba todas las líneas en blanco.<br>
 <br>
 <br>
-Actualizado el 16 de septimbre de 2020 a las 15:30 GMT+2
+Actualizado el 17 de septimbre de 2020 a las 13:17 GMT+2
