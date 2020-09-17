@@ -7,9 +7,9 @@
 
     <Product>gsColorearNET</Product>
     <!-- Versión del paquete -->
-    <Version>1.0.0.5</Version>
+    <Version>1.0.0.6</Version>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.7</FileVersion>
+    <FileVersion>1.0.0.8</FileVersion>
 
     <Authors>Guillermo Som (elGuille)</Authors>
     <Company>elGuille</Company>
@@ -27,7 +27,7 @@ Compilada con .NET Standard 2.0 para compatibilidad con .NET Framework 4.8 y .NE
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <NeutralLanguage>es-ES</NeutralLanguage>
     <PackageIcon>gsColorearNET.png</PackageIcon>
-    <PackageReleaseNotes>v1.0.0.7 del 16/Sep/2020: Cambio la función vb.Split para que no quite las líneas vacís si no se indica expresamente.
+    <PackageReleaseNotes>v1.0.0.8 (nuget v1.0.0.6) del 17/Sep/2020: Se quedaba algún \f0 al final del código.
 </PackageReleaseNotes>
     <PackageTags>vb net-standard visual-basic html span-style</PackageTags>
   </PropertyGroup>

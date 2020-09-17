@@ -73,6 +73,7 @@
 '                       y optimizo un poco el código.
 ' 1.0.0.7   16/Sep/20   Cambio la función vb.Split para que no quite
 '                       las líneas vacías si no se indica expresamente.
+' 1.0.0.8   17/Sep/20   Se quedaba algún \f0 al final del código.
 '
 ' ©Guillermo 'guille' Som, 2005-2007, 2018-2020
 '------------------------------------------------------------------------------
@@ -725,7 +726,9 @@ Public NotInheritable Class Colorear
             ' En ese caso, quitar el \f1 y el \f0 con el espacio
             ' También me he encontrado líneas con \f2           (12/Sep/20)
             lineas(i) = lineas(i).Replace("\f1", "") '.Replace("\f0 ", "") '.Replace("\f2", "")
-            lineas(i) = lineas(i).Replace("\f0 ", "")
+            'lineas(i) = lineas(i).Replace("\f0 ", "")
+            ' Las que no le siguen un espacio suelen estar al final (17/Sep/20)
+            lineas(i) = lineas(i).Replace("\f0", "")
 
             ' Se supone que lineas(i) contiene lo que haya que colorear
             ' Dejar de analizar cuando se llegue a: \pard\
@@ -827,10 +830,11 @@ Public NotInheritable Class Colorear
         If bFinSpan Then
             sb.Append("</span>")
         End If
-        ' Es posible que tenga \tab                             (17/Abr/07)
+        ' Es posible que tenga \tab                                 (17/Abr/07)
         sb.Replace("\tab", vbTab)
-        '
+
         texto = sb.ToString
+
         ' Quitar los espacios iniciales e indentarlo, si así se indica
         ' El problema es que al tener los <span no lo hace bien
         ' particularmente con los comentarios
