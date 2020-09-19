@@ -7,15 +7,15 @@
 
     <Product>gsColorearNET</Product>
     <!-- Versión del paquete -->
-    <Version>1.0.0.7</Version>
+    <Version>1.0.0.8</Version>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.9</FileVersion>
+    <FileVersion>1.0.0.10</FileVersion>
 
     <Authors>Guillermo Som (elGuille)</Authors>
     <Company>elGuille</Company>
     <Description>Biblioteca de clases para colorear el código y devolverlo en formato HTML o RTF.
 Compilada con .NET Standard 2.0 para compatibilidad con .NET Framework 4.8 y .NET Core 2.0 y superior (.NET 5.0).
-(para .NET Standard 2.0 revisión del 18/Sep/2020)</Description>
+(para .NET Standard 2.0 revisión del 19/Sep/2020)</Description>
     <Copyright>Copyright Guillermo Som (elGuille), 2020</Copyright>
     <OptionStrict>On</OptionStrict>
     <SignAssembly>true</SignAssembly>
@@ -27,9 +27,8 @@ Compilada con .NET Standard 2.0 para compatibilidad con .NET Framework 4.8 y .NE
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <NeutralLanguage>es-ES</NeutralLanguage>
     <PackageIcon>gsColorearNET.png</PackageIcon>
-    <PackageReleaseNotes>v1.0.0.9 Ya no se quedaba el \f0 pero al colorear desde RTF añadía líneas en blanco de más.
-v1.0.0.8 (nuget v1.0.0.6) del 17/Sep/2020: Se quedaba algún \f0 al final del código.
-</PackageReleaseNotes>
+    <PackageReleaseNotes>v1.0.0.10 Añado init, record, with y when a las palabras clave de C#
+v1.0.0.9 Ya no se quedaba el \f0 pero al colorear desde RTF añadía líneas en blanco de más.</PackageReleaseNotes>
     <PackageTags>vb net-standard visual-basic html span-style</PackageTags>
   </PropertyGroup>
 

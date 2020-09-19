@@ -74,6 +74,10 @@
 ' 1.0.0.7   16/Sep/20   Cambio la función vb.Split para que no quite
 '                       las líneas vacías si no se indica expresamente.
 ' 1.0.0.8   17/Sep/20   Se quedaba algún \f0 al final del código.
+' 1.0.0.9               Ya no se quedaba el \f0 pero
+'                       al colorear desde RTF añadía líneas en blanco de más.
+' 1.0.0.10  18/Sep/20   Añado init, record y with a las palabras clave de C#
+'           19/Sep/20   Añado when (de C# 8.0)
 '
 ' ©Guillermo 'guille' Som, 2005-2007, 2018-2020
 '------------------------------------------------------------------------------
