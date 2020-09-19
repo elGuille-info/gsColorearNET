@@ -44,7 +44,13 @@ Guillermo<br>
 <br>
 <br>
 <h2>Actualizaciones</h2>
-v1.0.0.8 del 17 de septiemrbe de 2020<br>
+v1.0.0.10 del 19 de septiembre de 2020<br>
+Añado init, record, with y when a las palabras clave de C#<br>
+<br>
+v1.0.0.9 del 18 de septiembre de 2020<br>
+Ya no se quedaba el \f0 pero al colorear desde RTF añadía líneas en blanco de más.<br>
+<br>
+v1.0.0.8 del 17 de septiembre de 2020<br>
 Corregido un BUG que dejaba algún \f0 al final.<br>
 <br>
 v1.0.0.7 del 16 de septiembre de 2020<br>
@@ -52,4 +58,4 @@ Cambio la función vb.Split para que no quite las líneas vacías si no se indic
 Corregido BUG que quitaba todas las líneas en blanco.<br>
 <br>
 <br>
-Actualizado el 17 de septimbre de 2020 a las 13:17 GMT+2
+Actualizado el 19 de septimbre de 2020 a las 18:50 GMT+2
