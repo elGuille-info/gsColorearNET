@@ -2,6 +2,9 @@
 ' Clase definida en la biblioteca para .NET Standard 2.0            (10/Sep/20)
 ' Basada en gsColorear y gsColorearCore
 '
+' v1.0.0.10 18/Sep/20   Añado init, record y with a las palabras clave de C#
+'           19/Sep/20   Añado when (de C# 8.0)
+'
 
 Option Strict On
 Option Infer On
@@ -56,6 +59,7 @@ group
 if
 implicit
 in
+init
 int
 into
 interface
@@ -80,6 +84,7 @@ private
 protected
 public
 readonly
+record
 ref
 region
 remove
@@ -113,8 +118,10 @@ virtual
 void
 volatile
 warning
+when
 where
 while
+with
 yield
 "
     Private Const VBKeywords As String = "AddHandler
