@@ -78,6 +78,9 @@
 '                       al colorear desde RTF añadía líneas en blanco de más.
 ' 1.0.0.10  18/Sep/20   Añado init, record y with a las palabras clave de C#
 '           19/Sep/20   Añado when (de C# 8.0)
+' 1.0.0.11  21/Sep/20   Cambio el reemplazo (en el texto) de vbCrLf por vbCr
+'                       para que no cree líneas extras en blanco al mostrarlo en un RichTextBox.
+'                       Cambio la versión del paquete de NuGet para que tenga la misma versión que FileVersion.
 '
 ' ©Guillermo 'guille' Som, 2005-2007, 2018-2020
 '------------------------------------------------------------------------------
@@ -578,7 +581,7 @@ Public NotInheritable Class Colorear
         ' NO cambiar \fs para que esté en otra línea                (12/Sep/20)
         texto = texto.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;")
 
-        Dim lineas() As String = texto.Split(vbCrLf.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
+        Dim lineas() As String = texto.Split(vbCr.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
 
         ' La segunda línea será la definición de los colores
         Dim colores() As String
@@ -776,7 +779,9 @@ Public NotInheritable Class Colorear
             ' también los caracteres especiales \, { y }
             ' TODO: El problema es que se coloree una cadena con esos códigos
             Dim s As String
-            s = lineas(i).Replace("\par", vbCrLf) _
+            ' Cambio el reemplazo de vbCrLf por vbCr                (21/Sep/20)
+            ' para que no cree líneas extrs en blanco al mostrarlo en un RichTextBox
+            s = lineas(i).Replace("\par", vbCr) _
                               .Replace("\\", "\") _
                               .Replace("\{", "{") _
                               .Replace("\}", "}")
@@ -1221,12 +1226,12 @@ Public NotInheritable Class Colorear
         If formato = FormatosColoreado.RTF Then
             ' Cabecera del fichero RTF
             sbRtf.AppendFormat("{{\rtf1\ansi\ansicpg1252\deff0{{\fonttbl{{\f0\fnil\fcharset0 {0};}}}}", Fuente)
-            sbRtf.Append(vbCrLf)
+            sbRtf.Append(vbCr)
             ' Definición de los colores a usar
             ' Incluir el color para las clases/tipos de C#      (08/Feb/07)
             sbRtf.AppendFormat("{{\colortbl ;{0};{1};{2};{3};{4};}}",
                             ColorComentarios, ColorInstrucciones, ColorTexto, ColorDocXML, ColorClases)
-            sbRtf.Append(vbCrLf)
+            sbRtf.Append(vbCr)
 
             ' Esto el SaveFile del RichControl no lo guarda         (27/Nov/05)
             'sbRtf.AppendFormat("{{\*\generator {0} {1};}}", My.Application.Info.Title, My.Application.Info.Version)
@@ -1240,10 +1245,10 @@ Public NotInheritable Class Colorear
             sbRtf.AppendFormat("\viewkind4\uc1\pard\lang3082\f0\fs{0} ", CInt(FuenteTam) * 2)
         Else
             If IncluirStyle Then
-                'sbRtf.AppendFormat("<style>pre{{font-family:{0}; font-size:{1}.0pt;}}</style>{2}", Fuente, FuenteTam, vbCrLf)
+                'sbRtf.AppendFormat("<style>pre{{font-family:{0}; font-size:{1}.0pt;}}</style>{2}", Fuente, FuenteTam, vbCr)
                 sbRtf.AppendFormat("<style>pre{{font-family:{0}; font-size:{1}.0pt;}}", Fuente, FuenteTam)
                 sbRtf.AppendFormat("p.Code{{font-family:{0}; font-size:{1}.0pt;}}", "Fixedsys", "9")
-                sbRtf.AppendFormat("</style>{0}", vbCrLf)
+                sbRtf.AppendFormat("</style>{0}", vbCr)
             End If
             sbRtf.Append(PreTag)
         End If
@@ -1255,9 +1260,9 @@ Public NotInheritable Class Colorear
         If lenguaje = Lenguajes.Ninguno Then
             If formato = FormatosColoreado.RTF Then
                 ' En RTF no basta con añadir el texto...
-                arCod = texto.Split(vbCrLf.ToCharArray)
+                arCod = texto.Split(vbCr.ToCharArray)
                 For i1 As Integer = 0 To arCod.Length - 2
-                    sbRtf.AppendFormat("{0}\cf0\par{1}", arCod(i1).Replace("\", "\\").Replace("{", "\{").Replace("}", "\}"), vbCrLf)
+                    sbRtf.AppendFormat("{0}\cf0\par{1}", arCod(i1).Replace("\", "\\").Replace("{", "\{").Replace("}", "\}"), vbCr)
                 Next
                 sbRtf.Append(arCod(arCod.Length - 1).Replace("\", "\\").Replace("{", "\{").Replace("}", "\}"))
                 ' Acaba con } y un valor nulo (Chrw(0))
@@ -1281,20 +1286,20 @@ Public NotInheritable Class Colorear
             If lenguaje = Lenguajes.SQL Then
                 arCod = texto.Replace(ChrW(34) & ChrW(34), ChrW(113) & "uotquot") _
                                  .Replace(ChrW(39) & ChrW(39), ChrW(115) & "uotsuot") _
-                                 .Split(vbCrLf.ToCharArray)
+                                 .Split(vbCr.ToCharArray)
             Else
-                arCod = texto.Replace(ChrW(34) & ChrW(34), ChrW(113) & "uotquot").Split(vbCrLf.ToCharArray)
+                arCod = texto.Replace(ChrW(34) & ChrW(34), ChrW(113) & "uotquot").Split(vbCr.ToCharArray)
             End If
         Else
             If lenguaje = Lenguajes.SQL Then
                 arCod = texto.Replace(ChrW(34) & ChrW(34), ChrW(113) & "uotquot") _
                                  .Replace(ChrW(39) & ChrW(39), ChrW(115) & "uotsuot") _
                                  .Replace("<", "&lt;").Replace(">", "&gt;") _
-                                 .Split(vbCrLf.ToCharArray)
+                                 .Split(vbCr.ToCharArray)
             Else
                 arCod = texto.Replace(ChrW(34) & ChrW(34), ChrW(113) & "uotquot") _
                                  .Replace("<", "&lt;").Replace(">", "&gt;") _
-                                 .Split(vbCrLf.ToCharArray)
+                                 .Split(vbCr.ToCharArray)
             End If
         End If
         Static esRemMult As Boolean '= False
@@ -1309,9 +1314,9 @@ Public NotInheritable Class Colorear
             ' que no añada un retorno extra ---------------------v
             If (arCod(i1) = Nothing OrElse arCod(i1).Length = 0) AndAlso (i1 < arCod.Length - 1) Then
                 If formato = FormatosColoreado.RTF Then
-                    sbRtf.AppendFormat("\cf0\par{0}", vbCrLf)
+                    sbRtf.AppendFormat("\cf0\par{0}", vbCr)
                 Else
-                    sbRtf.AppendFormat("{0}", vbCrLf)
+                    sbRtf.AppendFormat("{0}", vbCr)
                 End If
                 Continue For
             End If
@@ -1861,9 +1866,9 @@ Public NotInheritable Class Colorear
                 If formato = FormatosColoreado.RTF Then
                     ' Aquí cerrar el tag al color normal
                     ' el color rojo se añade en cada línea
-                    sbRtf.AppendFormat("\cf0\par{0}", vbCrLf)
+                    sbRtf.AppendFormat("\cf0\par{0}", vbCr)
                 Else
-                    sbRtf.AppendFormat("{0}", vbCrLf)
+                    sbRtf.AppendFormat("{0}", vbCr)
                 End If
             End If
         Next
@@ -1897,9 +1902,9 @@ Public NotInheritable Class Colorear
                                               "1.0.0.0")
         Dim fileVerAttr = ensamblado.GetCustomAttributes(GetType(System.Reflection.AssemblyFileVersionAttribute), False)
         Dim versF = If(fileVerAttr.Length > 0, TryCast(fileVerAttr(0), System.Reflection.AssemblyFileVersionAttribute).Version,
-                                              "1.0.0.1")
+                                              "1.0.0.11")
 
-        res = $"v {vers} ({versF})"
+        res = $"v{vers} ({versF})"
 
         If completa Then
             Dim prodAttr = ensamblado.GetCustomAttributes(GetType(System.Reflection.AssemblyProductAttribute), False)
@@ -1909,7 +1914,7 @@ Public NotInheritable Class Colorear
             ' La descripción, tomar solo el final                   (11/Sep/20)
             Dim descAttr = ensamblado.GetCustomAttributes(GetType(System.Reflection.AssemblyDescriptionAttribute), False)
             Dim desc = If(descAttr.Length > 0, TryCast(descAttr(0), System.Reflection.AssemblyDescriptionAttribute).Description,
-                                                "(para .NET Standard 2.0 revisión del 13/Sep/2020)")
+                                                "(para .NET Standard 2.0 revisión del 21/Sep/2020)")
             desc = desc.Substring(desc.IndexOf("(para .NET"))
 
             res = $"{producto} {res} {desc}"

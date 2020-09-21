@@ -2,6 +2,14 @@
 ' Clase definida en la biblioteca para .NET Standard 2.0            (10/Sep/20)
 ' Basada en gsColorear y gsColorearCore
 '
+'###############################################################
+' IMPORTANTE:                                       (21/Sep/20)
+' Cualquier cambio hacerlo también en la clase independiente
+' Usada actualmente por:
+'   gsEvaluarColorearCodigoNET
+'###############################################################
+'
+'
 ' Clase para manejar ficheros de configuración                      (15/Nov/05)
 '
 '
