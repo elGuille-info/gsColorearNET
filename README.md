@@ -44,6 +44,7 @@ Guillermo<br>
 <br>
 <br>
 <h2>Actualizaciones</h2>
+v1.0.0.14 El problema de dejar las líneas en blanco era por el tipo de retorno de carro que se ve que varía de fichero a fichero.<br>
 v1.0.0.13 Seguía dejando líneas extras si quitar espacios iniciales estaba marcado.<br>
 v1.0.0.12 Se quedó ún vbLf perdido y no se mostraban los cambios de línea en ColorearCodigo<br>
 v1.0.0.11 Cambio el reemplazo (en el texto) de vbCrLf por vbCr<br>
