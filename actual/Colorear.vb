@@ -81,6 +81,9 @@
 ' 1.0.0.11  21/Sep/20   Cambio el reemplazo (en el texto) de vbCrLf por vbCr
 '                       para que no cree líneas extras en blanco al mostrarlo en un RichTextBox.
 '                       Cambio la versión del paquete de NuGet para que tenga la misma versión que FileVersion.
+' 1.0.0.12  22/Sep/20   Se quedó ún vbLf perdido y no se mostraban los cambios de línea en ColorearCodigo
+' 1.0.0.13              Seguía dejando líneas extras si quitar espacios iniciales estaba marcado
+'
 '
 ' ©Guillermo 'guille' Som, 2005-2007, 2018-2020
 '------------------------------------------------------------------------------
@@ -581,7 +584,16 @@ Public NotInheritable Class Colorear
         ' NO cambiar \fs para que esté en otra línea                (12/Sep/20)
         texto = texto.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;")
 
-        Dim lineas() As String = texto.Split(vbCr.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
+        ' Comprobar qué tipo de cambio de línea tiene               (24/Oct/20)
+        Dim lineas() As String
+        If texto.IndexOf(vbCrLf) > -1 Then
+            lineas = texto.Split(vbCrLf.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
+        ElseIf texto.IndexOf(vbCr) > -1 Then
+            lineas = texto.Split(vbCr.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
+        ElseIf texto.IndexOf(vblf) > -1 Then
+            lineas = texto.Split(vbLf.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
+        End If
+        'lineas = texto.Split(vbCr.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
 
         ' La segunda línea será la definición de los colores
         Dim colores() As String
@@ -780,7 +792,7 @@ Public NotInheritable Class Colorear
             ' TODO: El problema es que se coloree una cadena con esos códigos
             Dim s As String
             ' Cambio el reemplazo de vbCrLf por vbCr                (21/Sep/20)
-            ' para que no cree líneas extrs en blanco al mostrarlo en un RichTextBox
+            ' para que no cree líneas extras en blanco al mostrarlo en un RichTextBox
             s = lineas(i).Replace("\par", vbCr) _
                               .Replace("\\", "\") _
                               .Replace("\{", "{") _
@@ -905,6 +917,8 @@ Public NotInheritable Class Colorear
         If indentar > 0 OrElse quitarEspaciosIniciales Then
             ' Es posible que solo tenga el vbLf
             If texto.IndexOf(vbCrLf) > -1 Then
+                ' Esto hay que hacerlo si hay repetidos             (22/Sep/20)
+                texto = texto.Replace(vbCrLf & vbCrLf, vbCr)
                 saCodigo = vb.Split(texto, vbCrLf)
             ElseIf texto.IndexOf(vbCr) > -1 Then
                 saCodigo = vb.Split(texto, vbCr)
@@ -995,7 +1009,8 @@ Public NotInheritable Class Colorear
                 End If
             Next
             ' Convertir el array en una cadena
-            texto = String.Join(vbLf, saCodigo).Trim
+            ' Se me coló un vbLf en vez de vbCr                 (22/Sep/20)
+            texto = String.Join(vbCr, saCodigo).Trim
         End If
 
         Return texto

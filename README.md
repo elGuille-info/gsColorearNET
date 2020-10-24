@@ -44,6 +44,11 @@ Guillermo<br>
 <br>
 <br>
 <h2>Actualizaciones</h2>
+v1.0.0.13 Seguía dejando líneas extras si quitar espacios iniciales estaba marcado.<br>
+v1.0.0.12 Se quedó ún vbLf perdido y no se mostraban los cambios de línea en ColorearCodigo<br>
+v1.0.0.11 Cambio el reemplazo (en el texto) de vbCrLf por vbCr<br>
+para que no cree líneas extras en blanco al mostrarlo en un RichTextBox.<br>
+Cambio la versión del paquete de NuGet para que tenga la misma versión que FileVersion.<br>
 v1.0.0.10 del 19 de septiembre de 2020<br>
 Añado init, record, with y when a las palabras clave de C#<br>
 <br>
@@ -58,4 +63,4 @@ Cambio la función vb.Split para que no quite las líneas vacías si no se indic
 Corregido BUG que quitaba todas las líneas en blanco.<br>
 <br>
 <br>
-Actualizado el 19 de septimbre de 2020 a las 18:50 GMT+2
+Actualizado el 24 de octubre de 2020 a eso de las 15:15 GMT+2
