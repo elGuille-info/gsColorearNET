@@ -83,6 +83,10 @@
 '                       Cambio la versión del paquete de NuGet para que tenga la misma versión que FileVersion.
 ' 1.0.0.12  22/Sep/20   Se quedó ún vbLf perdido y no se mostraban los cambios de línea en ColorearCodigo
 ' 1.0.0.13              Seguía dejando líneas extras si quitar espacios iniciales estaba marcado
+' 1.0.0.14  24/Oct/20   El problema de dejar las líneas en blanco era por el tipo de retorno de carro
+'                       que se ve que varía de fichero a fichero.
+' 1.0.0.15  25/Oct/20   Comprobación de que al colorear en RTF el texto tenga retornos de carro.
+'                       Comprobar si en ColorearCodigo hay que comprobar cómo dividir las líneas.
 '
 '
 ' ©Guillermo 'guille' Som, 2005-2007, 2018-2020
@@ -592,6 +596,8 @@ Public NotInheritable Class Colorear
             lineas = texto.Split(vbCr.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
         ElseIf texto.IndexOf(vblf) > -1 Then
             lineas = texto.Split(vbLf.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
+        Else
+            Throw New Exception("Parece que 'texto' no tiene retornos de carro para crear el array lineas().")
         End If
         'lineas = texto.Split(vbCr.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
 
@@ -1267,9 +1273,9 @@ Public NotInheritable Class Colorear
             End If
             sbRtf.Append(PreTag)
         End If
-        '
+
         Dim arCod() As String
-        '
+
         ' Si el lenguaje es Ninguno, no hacer nada              (16/Dic/05) 0.40822
         ' salvo usar el tipo de letra indicado.
         If lenguaje = Lenguajes.Ninguno Then

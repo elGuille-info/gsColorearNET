@@ -7,15 +7,15 @@
 
     <Product>gsColorearNET</Product>
     <!-- Versión del paquete -->
-    <Version>1.0.0.14</Version>
+    <Version>1.0.0.15</Version>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.13</FileVersion>
+    <FileVersion>1.0.0.15</FileVersion>
 
     <Authors>Guillermo Som (elGuille)</Authors>
     <Company>elGuille</Company>
     <Description>Biblioteca de clases para colorear el código y devolverlo en formato HTML o RTF.
 Compilada con .NET Standard 2.0 para compatibilidad con .NET Framework 4.8 y .NET Core 2.0 y superior (.NET 5.0).
-(para .NET Standard 2.0 revisión del 24/Oct/2020)</Description>
+(para .NET Standard 2.0 revisión del 25/Oct/2020)</Description>
     <Copyright>Copyright Guillermo Som (elGuille), 2020</Copyright>
     <OptionStrict>On</OptionStrict>
     <SignAssembly>true</SignAssembly>
@@ -27,7 +27,9 @@ Compilada con .NET Standard 2.0 para compatibilidad con .NET Framework 4.8 y .NE
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <NeutralLanguage>es-ES</NeutralLanguage>
     <PackageIcon>gsColorearNET.png</PackageIcon>
-    <PackageReleaseNotes>v1.0.0.14 El problema de dejar las líneas en blanco era por el tipo de retorno de carro que se ve que varía de fichero a fichero.</PackageReleaseNotes>
+    <PackageReleaseNotes>v1.0.0.15 Comprobación de que al colorear en RTF el texto tenga retornos de carro.
+Comprobar si en ColorearCodigo hay que comprobar cómo dividir las líneas.
+v1.0.0.14 El problema de dejar las líneas en blanco era por el tipo de retorno de carro que se ve que varía de fichero a fichero.</PackageReleaseNotes>
     <PackageTags>vb net-standard visual-basic html span-style</PackageTags>
   </PropertyGroup>
 
