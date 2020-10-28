@@ -44,6 +44,7 @@ Guillermo<br>
 <br>
 <br>
 <h2>Actualizaciones</h2>
+v1.0.0.16 Comprobación de que haya varios \lang y \line como cambio de línea.<br>
 v1.0.0.15 Comprobación de que al colorear en RTF el texto tenga retornos de carro.<br>
 Comprobar si en ColorearCodigo hay que comprobar cómo dividir las líneas.<br>
 v1.0.0.14 El problema de dejar las líneas en blanco era por el tipo de retorno de carro que se ve que varía de fichero a fichero.<br>
@@ -66,4 +67,4 @@ Cambio la función vb.Split para que no quite las líneas vacías si no se indic
 Corregido BUG que quitaba todas las líneas en blanco.<br>
 <br>
 <br>
-Actualizado el 25 de octubre de 2020 a eso de las 14:11 GMT+1
+Actualizado el 28 de octubre de 2020 a eso de las 13:07 GMT+1

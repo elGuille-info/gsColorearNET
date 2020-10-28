@@ -87,6 +87,7 @@
 '                       que se ve que varía de fichero a fichero.
 ' 1.0.0.15  25/Oct/20   Comprobación de que al colorear en RTF el texto tenga retornos de carro.
 '                       Comprobar si en ColorearCodigo hay que comprobar cómo dividir las líneas.
+' 1.0.0.16  28/Oct/20   Comprobación de que haya varios \lang y \line como cambio de línea.
 '
 '
 ' ©Guillermo 'guille' Som, 2005-2007, 2018-2020
@@ -736,9 +737,30 @@ Public NotInheritable Class Colorear
                     lineas(i) = lineas(i).Substring(k + 1)
                 End If
                 ' Es posible que todo esté en una línea
+                ' Si se edita el texto en el editor de la utilidad  (28/Oct/20)
+                ' puede que le añada más \lang, por ejemplo:
+                ' \cf1 Private\cf2  \cf1 Sub\cf2  Button1_Click(sender \cf1 As\cf2  \cf1 Object\cf2 , e \cf1 As\cf2  \cf3 EventArgs\cf2 )\f1\lang1033  _\line\tab\tab\tab\f0\lang3082  \cf1 Handles\cf2  Button1.Click\par
+                '   \cf3 EventArgs\cf2 )\f1\lang1033
+                '    _\line\tab\tab\tab\f0\lang3082  \cf1 Handles\cf2  Button1.Click\par
                 j = lineas(i).IndexOf("\pard\")
                 If j = -1 Then
+                    ' si está \lang irá seguido de cifras y un espacio (28/Oct/20)
+                    ' buscar varias instancias en esta línea
                     j = lineas(i).IndexOf("\lang")
+                    Do While j > -1
+                        k = lineas(i).IndexOf(" ", j)
+                        If k > -1 Then
+                            lineas(i) = lineas(i).Substring(0, j) & lineas(i).Substring(k)
+                            j = lineas(i).IndexOf("\lang")
+                        End If
+                    Loop
+                    'If j > -1 Then
+                    '    k = lineas(i).IndexOf(" ", j)
+                    '    If k > -1 Then
+                    '        lineas(i) = lineas(i).Substring(0, j) & lineas(i).Substring(k)
+                    '        j = -1
+                    '    End If
+                    'End If
                 End If
                 If j > -1 Then
                     lineas(i) = lineas(i).Substring(0, j)
@@ -799,7 +821,8 @@ Public NotInheritable Class Colorear
             Dim s As String
             ' Cambio el reemplazo de vbCrLf por vbCr                (21/Sep/20)
             ' para que no cree líneas extras en blanco al mostrarlo en un RichTextBox
-            s = lineas(i).Replace("\par", vbCr) _
+            ' \line es un cambio de línea, no de párrafo            (28/Oct/20)
+            s = lineas(i).Replace("\par", vbCr).Replace("\line", vbCr) _
                               .Replace("\\", "\") _
                               .Replace("\{", "{") _
                               .Replace("\}", "}")
@@ -859,7 +882,7 @@ Public NotInheritable Class Colorear
             sb.Append("</span>")
         End If
         ' Es posible que tenga \tab                                 (17/Abr/07)
-        sb.Replace("\tab", vbTab)
+        sb.Replace("\tab", vbTab).Replace("\fs17", "")
 
         texto = sb.ToString
 
