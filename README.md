@@ -24,7 +24,7 @@ En estas aplicaciones si no indico el nombre de la DLL de colorear será gsColor
 el paquete de <a href="https://www.nuget.org/packages/gsColorearNET/">NuGet</a>.<br>
 gsColorearCodigo v1.0.3.21 para .NET Framework 2.0<br>
 gsColorearCodigo v1.0.7.1 para .NET Framework 4.7.2<br>
-gsColorearCodigo v1.0.8.6 para .NET Framework 4.8 (utiliza gsColorearNET) (1)<br>
+gsColorearCodigo v1.0.8.12 para .NET Framework 4.8 (utiliza gsColorearNET) (1)<br>
 gsEditor 2008 v1.0.7.0 para .NET Framework 4.7.2<br>
 gsEditor 2008 v1.0.7.2 para .NET Framework 4.7.2 (utiliza gsColorearNET)<br>
 Compilar y ejecutar VB v1.0.0.22 para .NET Framework 4.7.2 (utiliza gsColorearNET)<br>
@@ -34,7 +34,7 @@ Y en estas otras que actualmente estoy depurando o solo para uso personal:<br>
 <br>Si no indico lo contrario, utiliza gsColorearNET.<br>
 Compilar y ejecutar (.NET 5.0) v1.0.0.0 para .NET 5.0 Preview 8 (utiliza gsColorearCore)<br>
 Compilar NETCore WinF v1.0.0.4 para .NET 5.0 Preview 8<br>
-gsColorearCodigoNET v1.1.0.0 para .NET 5.0 Preview 8 (utilidad convertida para .NET 5.0 a partir de gsColorearCodigo v1.0.8.4)<br>
+gsColorearCodigoNET v1.1.0.9 para .NET 5.0 RC2 (utilidad convertida para .NET 5.0 a partir de gsColorearCodigo v1.0.8.4)<br>
 <br>
 <br>
 (1) Esta utilidad está publicada en GitHub: <a href="https://github.com/elGuille-info/gsColorearCodigo">gsColorearCodigo</a>.
