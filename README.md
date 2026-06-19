@@ -1,5 +1,12 @@
 # gsColorearNET
 Biblioteca de clases para colorear código y convertirlo en formato HTML (para usar en sitios WEB)
+
+<br>
+
+## Existe una versión mejorada de esta DLL (junio 2026)
+Está en el repositorio: https://github.com/elGuille-info/gsColorearCodigo-NET9
+
+<br>
 <br> 
 El lenguaje de código usado es Visual Basic .NET.<br>
 <br>
